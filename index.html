@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deutsch Täglich</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🇩🇪</text></svg>">
+<style>
+/* Hard resets — override ANYTHING from style.css if loaded */
+html { background:#f5f0e8 !important; }
+body { 
+  margin:0 !important; padding:0 !important;
+  background:#f5f0e8 !important;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif !important;
+  color:#111 !important;
+  display:block !important;
+  min-height:100vh !important;
+}
+
+/* Topbar */
+#topbar {
+  position:sticky; top:0; z-index:9999;
+  background:rgba(245,240,232,.97);
+  border-bottom:1px solid rgba(0,0,0,.1);
+  height:54px;
+  display:flex !important;
+  align-items:center;
+  padding:0 16px; gap:8px;
+  box-sizing:border-box;
+}
+#logo {
+  display:flex; align-items:center; gap:9px;
+  text-decoration:none; color:#111;
+  font-size:16px; font-weight:700;
+  flex-shrink:0; white-space:nowrap;
+}
+#logo:hover { opacity:.7; }
+#topnav {
+  flex:1; display:flex; align-items:center;
+  justify-content:center; gap:2px; overflow:hidden;
+}
+#topnav a {
+  white-space:nowrap; padding:6px 11px; border-radius:999px;
+  font-size:13px; font-weight:500; color:#111;
+  text-decoration:none; opacity:.6; transition:all .15s;
+}
+#topnav a:hover { opacity:1; background:rgba(0,0,0,.07); }
+#topnav a.on { opacity:1; background:#111; color:#f5f0e8; }
+#topacts {
+  display:flex !important; align-items:center;
+  gap:6px; flex-shrink:0;
+}
+.ibtn {
+  width:36px !important; height:36px !important;
+  border-radius:50%; border:1.5px solid rgba(0,0,0,.2);
+  background:#fff !important; cursor:pointer;
+  display:flex !important; align-items:center; justify-content:center;
+  padding:0; box-shadow:0 1px 4px rgba(0,0,0,.1);
+}
+.ibtn:hover { background:#eee !important; }
+@media(max-width:640px){
+  #topnav { display:none !important; }
+  #logo-txt { display:none !important; }
+  #topacts { display:flex !important; margin-left:auto; gap:8px; }
+  .ibtn {
+    width:38px !important; height:38px !important;
+    background:#fff !important;
+    border:1.5px solid rgba(0,0,0,.22) !important;
+    box-shadow:0 1px 5px rgba(0,0,0,.13) !important;
+    display:flex !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    flex-shrink:0 !important;
+  }
+}
+
+/* Drawer */
+#drw-bk {
+  position:fixed; inset:0; background:rgba(0,0,0,.4);
+  z-index:10000; display:none;
+}
+#drw {
+  position:fixed; top:0; right:0;
+  width:280px; height:100%; background:#fff;
+  z-index:10001; display:none; flex-direction:column;
+  box-shadow:-4px 0 24px rgba(0,0,0,.18);
+  overflow-y:auto;
+}
+#drw.open, #drw-bk.open { display:flex; }
+#drw-bk.open { display:block; }
+.drw-top {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 20px; border-bottom:1px solid #eee;
+  font-weight:700; font-size:13px; letter-spacing:.06em; text-transform:uppercase;
+}
+.drw-nav { display:flex; flex-direction:column; padding:8px 0; }
+.drw-nav a {
+  padding:13px 20px; text-decoration:none; color:#111;
+  font-size:15px; font-weight:500;
+  border-left:3px solid transparent;
+  transition:background .12s;
+}
+.drw-nav a:hover { background:#f5f5f5; }
+.drw-nav a.on { border-left-color:#111; background:#f9f9f9; }
+.xcls {
+  background:none; border:none; cursor:pointer;
+  font-size:20px; color:#888; padding:4px 6px; line-height:1;
+}
+
+/* Modals */
+.modal {
+  position:fixed; inset:0; z-index:20000; display:none;
+}
+.modal.open { display:block; }
+.mbk {
+  position:absolute; inset:0; background:rgba(0,0,0,.4);
+}
+.mpanel {
+  position:absolute; top:8vh; left:50%; transform:translateX(-50%);
+  width:min(92vw,660px); background:#fff; border-radius:12px;
+  padding:20px; max-height:80vh;
+  display:flex; flex-direction:column; overflow:hidden;
+}
+.mtop {
+  display:flex; align-items:center; justify-content:space-between;
+  padding-bottom:12px; border-bottom:1px solid #eee;
+  font-weight:700; font-size:13px; letter-spacing:.06em; text-transform:uppercase;
+}
+.minput {
+  display:block; width:100%; margin:12px 0;
+  padding:10px 12px; border:1px solid #e0e0e0;
+  border-radius:8px; font-size:15px; font-family:inherit;
+  outline:none; box-sizing:border-box;
+}
+.minput:focus { border-color:#888; }
+.mres {
+  flex:1; overflow-y:auto; display:flex;
+  flex-direction:column; gap:4px;
+  padding-top:4px;
+}
+.mrow {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:9px 8px; border-radius:8px; cursor:pointer;
+}
+.mrow:hover { background:#f5f5f5; }
+
+/* Hero content */
+#page {
+  display:block !important;
+  padding:24px 16px 0;
+  max-width:860px; margin:0 auto;
+  width:100%; box-sizing:border-box;
+}
+#meta {
+  display:flex; align-items:center; gap:10px;
+  flex-wrap:wrap; justify-content:center; margin-bottom:16px;
+}
+#ddate {
+  font-size:11px; letter-spacing:1.5px;
+  text-transform:uppercase; opacity:.45; font-weight:500;
+}
+.badge {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:4px 11px; border-radius:999px;
+  border:1.5px solid #c8973a;
+  font-size:11px; font-weight:600; letter-spacing:1px;
+  text-transform:uppercase; color:#c8973a;
+}
+.dot {
+  width:6px; height:6px; border-radius:50%;
+  background:#c0392b; animation:bl 2s infinite;
+}
+@keyframes bl {0%,100%{opacity:1}50%{opacity:.3}}
+#type-pill {
+  display:inline-block; padding:3px 12px; border-radius:999px;
+  background:rgba(200,151,58,.12); border:1px solid rgba(200,151,58,.4);
+  font-size:11px; font-weight:600; letter-spacing:1px;
+  text-transform:uppercase; color:#9a7225; margin-bottom:10px;
+}
+#qm {
+  font-family:Georgia,serif; font-size:65px; line-height:.5;
+  color:#e8c06a; opacity:.4; display:block;
+  margin-left:max(12px,4vw); user-select:none;
+}
+#gtxt {
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:clamp(22px,4.5vw,54px);
+  font-weight:bold; line-height:1.18; text-align:center;
+  color:#111 !important; margin:10px 0 0;
+  transition:opacity .22s,transform .22s;
+  display:block !important;
+}
+#gtxt.out { opacity:0; transform:translateY(8px); }
+#cards {
+  display:grid; grid-template-columns:1fr 1fr; gap:10px;
+  margin:22px 0 0;
+}
+@media(max-width:480px){ #cards { grid-template-columns:1fr; } }
+.card {
+  background:#fff; border:1px solid rgba(0,0,0,.08);
+  border-radius:14px; padding:12px 14px;
+  display:block !important;
+}
+.full { grid-column:1/-1; }
+.lbl {
+  display:block; font-size:10px; font-weight:600;
+  letter-spacing:1.5px; text-transform:uppercase;
+  opacity:.38; margin-bottom:4px;
+}
+.val { font-size:14px; line-height:1.55; color:#111; display:block !important; }
+.val.it { font-style:italic; opacity:.7; }
+.val.bd { font-weight:600; }
+
+/* Controls */
+#ctrls {
+  display:flex; align-items:center; justify-content:center;
+  gap:12px; margin:24px 0 8px; flex-wrap:wrap; padding:0 16px;
+}
+.ctrl {
+  width:46px; height:46px; border-radius:50%;
+  border:1.5px solid rgba(0,0,0,.2);
+  background:#fff; cursor:pointer; font-size:20px;
+  display:flex; align-items:center; justify-content:center;
+  transition:all .15s; box-shadow:0 2px 8px rgba(0,0,0,.07);
+}
+.ctrl:hover { background:#111; color:#f5f0e8; border-color:#111; }
+.ctrl:active { transform:scale(.94); }
+#cnt {
+  display:flex; flex-direction:column;
+  align-items:center; min-width:46px;
+}
+#cnt-n {
+  font-family:Georgia,serif; font-size:24px;
+  font-weight:bold; line-height:1;
+}
+#cnt-t { font-size:10px; opacity:.35; }
+#sbtn {
+  display:flex; align-items:center; gap:6px;
+  padding:10px 16px; border-radius:999px;
+  border:1.5px solid rgba(0,0,0,.2);
+  background:#fff; cursor:pointer;
+  font-size:13px; font-weight:500; font-family:inherit;
+  box-shadow:0 2px 8px rgba(0,0,0,.07); transition:all .15s;
+}
+#sbtn:hover, #sbtn.saved {
+  background:#c8973a; color:#fff; border-color:#c8973a;
+}
+#prog { margin:4px 16px 0; }
+#prog-t { height:2px; background:rgba(0,0,0,.08); border-radius:2px; }
+#prog-f { height:100%; background:#c8973a; border-radius:2px; transition:width .35s; width:.5%; }
+#hint {
+  text-align:center; margin:6px 0 20px;
+  font-size:11px; opacity:.25;
+}
+kbd {
+  display:inline-block; padding:1px 5px;
+  border:1px solid rgba(0,0,0,.2); border-radius:3px;
+  font:inherit; font-size:10px;
+}
+@media(max-width:480px){ #hint { display:none; } }
+
+/* Error box */
+#errbox {
+  display:none; background:#fee; border:1px solid #f88;
+  border-radius:8px; padding:12px 16px; margin:16px;
+  font-size:13px; color:#c00;
+}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <a href="index.html" id="logo">
+    <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+      <rect width="26" height="8.67" fill="#000"/>
+      <rect y="8.67" width="26" height="8.67" fill="#DD0000"/>
+      <rect y="17.33" width="26" height="8.67" fill="#FFCE00"/>
+    </svg>
+    <span id="logo-txt">Deutsch Täglich</span>
+  </a>
+  <div id="topnav">
+    <a href="index.html" class="on">✦ Daily</a>
+    <a href="verbs.html">Verbs</a>
+    <a href="nouns.html">Nouns</a>
+    <a href="adjectives.html">Adjectives</a>
+    <a href="adverbs.html">Adverbs</a>
+    <a href="practice.html">Practice</a>
+    <a href="grammar.html">Grammar</a>
+  </div>
+  <div id="topacts">
+    <button class="ibtn" id="btnSearch" aria-label="Search">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+    </button>
+    <button class="ibtn" id="btnSaved" aria-label="Saved">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+    </button>
+    <button class="ibtn" id="btnMenu" aria-label="Menu">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- Drawer -->
+<div id="drw-bk" onclick="closeDrw()"></div>
+<div id="drw">
+  <div class="drw-top">Menu <button class="xcls" onclick="closeDrw()">✕</button></div>
+  <div class="drw-nav">
+    <a href="index.html" class="on">✦ Daily Idioms</a>
+    <a href="verbs.html">🔤 Verbs</a>
+    <a href="nouns.html">📦 Nouns</a>
+    <a href="adjectives.html">🎨 Adjectives</a>
+    <a href="adverbs.html">💨 Adverbs</a>
+    <a href="practice.html">✅ Practice</a>
+    <a href="grammar.html">📖 Grammar</a>
+  </div>
+</div>
+
+<!-- Search modal -->
+<div class="modal" id="mSearch">
+  <div class="mbk" onclick="closeM('mSearch')"></div>
+  <div class="mpanel">
+    <div class="mtop">Search <button class="xcls" onclick="closeM('mSearch')">✕</button></div>
+    <input class="minput" id="sq" placeholder="Type to search idioms…" oninput="doSearch()">
+    <div class="mres" id="sres"></div>
+  </div>
+</div>
+
+<!-- Saved modal -->
+<div class="modal" id="mSaved">
+  <div class="mbk" onclick="closeM('mSaved')"></div>
+  <div class="mpanel">
+    <div class="mtop">Saved Phrases <button class="xcls" onclick="closeM('mSaved')">✕</button></div>
+    <div class="mres" id="svres"></div>
+  </div>
+</div>
+
+<!-- Main content — visible even before JS runs -->
+<div id="page">
+  <div id="meta">
+    <span id="ddate">—</span>
+    <span style="opacity:.3">·</span>
+    <span class="badge"><span class="dot"></span>&nbsp;Phrase of the Day</span>
+  </div>
+  <div style="text-align:center">
+    <span id="type-pill">Idiom</span>
+  </div>
+  <div id="qm">"</div>
+  <h1 id="gtxt">Das ist nicht mein Bier.</h1>
+  <div id="errbox"></div>
+  <div id="cards">
+    <div class="card"><span class="lbl">📖 Literal</span><p class="val it" id="vLit">That is not my beer.</p></div>
+    <div class="card"><span class="lbl">🏷 Category</span><p class="val" id="vCat">everyday</p></div>
+    <div class="card full"><span class="lbl">💡 Meaning</span><p class="val bd" id="vMean">That's not my problem / not my business.</p></div>
+    <div class="card full"><span class="lbl">🗣 Example</span><p class="val" id="vEx">Kümmere dich nicht darum – das ist nicht mein Bier.</p></div>
+  </div>
+</div>
+
+<div id="prog"><div id="prog-t"><div id="prog-f"></div></div></div>
+<div id="ctrls">
+  <button class="ctrl" id="btnP">←</button>
+  <div id="cnt"><span id="cnt-n">1</span><span id="cnt-t">of 200</span></div>
+  <button class="ctrl" id="btnN">→</button>
+  <button id="sbtn"><span id="sHrt">♡</span>&nbsp;<span id="sLbl">Save</span></button>
+</div>
+<div id="hint"><kbd>←</kbd> prev &nbsp;·&nbsp; <kbd>→</kbd> next &nbsp;·&nbsp; <kbd>S</kbd> save</div>
+
+<noscript><p style="text-align:center;padding:20px;color:#888">Enable JavaScript to browse all 200 phrases.</p></noscript>
+
+<script>
+// Error handler — shows any JS crash visibly
+onerror = function(msg, src, line, col, err) {
+  var box = document.getElementById('errbox');
+  if (box) { box.style.display = 'block'; box.textContent = 'JS Error: ' + msg + ' (line ' + line + ')'; }
+  return false;
+};
+
+
+function openDrw()  { document.getElementById('drw').classList.add('open');    document.getElementById('drw-bk').classList.add('open'); }
+function closeDrw() { document.getElementById('drw').classList.remove('open'); document.getElementById('drw-bk').classList.remove('open'); }
+document.getElementById('btnMenu').addEventListener('click', openDrw);
+
+
+function openM(id)  { document.getElementById(id).classList.add('open'); }
+function closeM(id) { document.getElementById(id).classList.remove('open'); }
+document.getElementById('btnSearch').addEventListener('click', function() { openM('mSearch'); setTimeout(function(){ document.getElementById('sq').focus(); }, 80); });
+document.getElementById('btnSaved').addEventListener('click', function()  { openM('mSaved');  renderSaved(); });
+
+
+var saved = [], savedMeta = {};
+try {
+  saved     = JSON.parse(localStorage.getItem('dtSaved') || '[]');
+  savedMeta = JSON.parse(localStorage.getItem('dtMeta')  || '{}');
+} catch(e) {}
+function storeSaved() {
+  try { localStorage.setItem('dtSaved', JSON.stringify(saved)); localStorage.setItem('dtMeta', JSON.stringify(savedMeta)); } catch(e){}
+}
+function isSaved(id) { return saved.indexOf(id) >= 0; }
+function addSaved(id, meta) { if (!isSaved(id)) saved.push(id); savedMeta[id] = meta; storeSaved(); }
+function remSaved(id) { saved = saved.filter(function(x){ return x !== id; }); delete savedMeta[id]; storeSaved(); }
+
+
+var DB = [
+  { id: 1, german: "Das ist nicht mein Bier.", literal: "That is not my beer.", meaning: "That's not my problem / not my business.", example: "Kümmere dich nicht darum – das ist nicht mein Bier.", category: "everyday", type: "idiom", tags: ["beer", "responsibility"] },
+  { id: 2, german: "Den Teufel an die Wand malen.", literal: "To paint the devil on the wall.", meaning: "To tempt fate by expecting the worst; to be overly pessimistic.", example: "Mal nicht den Teufel an die Wand – es wird schon gut gehen.", category: "attitude", type: "idiom", tags: ["superstition", "pessimism"] },
+  { id: 3, german: "Da liegt der Hund begraben.", literal: "That's where the dog is buried.", meaning: "That's the crux of the matter; that's the real problem.", example: "Jetzt weiß ich, wo der Hund begraben liegt.", category: "problem", type: "idiom", tags: ["dog", "problem"] },
+  { id: 4, german: "Einen Bock schießen.", literal: "To shoot a billy goat.", meaning: "To make a blunder; to put one's foot in it.", example: "Mit dieser Aussage habe ich einen Bock geschossen.", category: "mistakes", type: "idiom", tags: ["mistake", "goat"] },
+  { id: 5, german: "Das ist ein Katzensprung.", literal: "That's a cat's jump.", meaning: "It's just a stone's throw away; very short distance.", example: "Zum Bahnhof ist es nur ein Katzensprung.", category: "distance", type: "idiom", tags: ["cat", "distance"] },
+  { id: 6, german: "Schwein haben.", literal: "To have pig.", meaning: "To be lucky; to have a stroke of luck.", example: "Er hat wirklich Schwein gehabt, dass er den Bus noch erwischt hat.", category: "luck", type: "idiom", tags: ["pig", "luck"] },
+  { id: 7, german: "Die Katze aus dem Sack lassen.", literal: "To let the cat out of the bag.", meaning: "To reveal a secret.", example: "Endlich hat sie die Katze aus dem Sack gelassen.", category: "secrets", type: "idiom", tags: ["cat", "secret"] },
+  { id: 8, german: "Mit den Wölfen heulen.", literal: "To howl with the wolves.", meaning: "To go along with the crowd; to follow the majority.", example: "Er heulte mit den Wölfen, obwohl er eigentlich anderer Meinung war.", category: "society", type: "idiom", tags: ["wolf", "conformity"] },
+  { id: 9, german: "Den Stier bei den Hörnern packen.", literal: "To grab the bull by the horns.", meaning: "To tackle a problem head-on; to face a challenge directly.", example: "Es wird Zeit, den Stier bei den Hörnern zu packen.", category: "action", type: "idiom", tags: ["bull", "courage"] },
+  { id: 10, german: "Eulen nach Athen tragen.", literal: "To carry owls to Athens.", meaning: "To carry coals to Newcastle; to do something completely unnecessary.", example: "Ihm Ratschläge geben? Das heißt Eulen nach Athen tragen.", category: "futility", type: "idiom", tags: ["owl", "futility"] },
+  { id: 11, german: "Ein Haar in der Suppe finden.", literal: "To find a hair in the soup.", meaning: "To find fault with everything; to nitpick.", example: "Er findet immer ein Haar in der Suppe.", category: "attitude", type: "idiom", tags: ["food", "criticism"] },
+  { id: 12, german: "Die Kuh vom Eis bringen.", literal: "To get the cow off the ice.", meaning: "To resolve a difficult or awkward situation.", example: "Wir müssen irgendwie die Kuh vom Eis bringen.", category: "problem", type: "idiom", tags: ["cow", "solution"] },
+  { id: 13, german: "Einem geschenkten Gaul schaut man nicht ins Maul.", literal: "Don't look a gift horse in the mouth.", meaning: "Be grateful for gifts and don't find fault with them.", example: "Sei dankbar! Einem geschenkten Gaul schaut man nicht ins Maul.", category: "gratitude", type: "proverb", tags: ["horse", "gratitude"] },
+  { id: 14, german: "Mit jemandem ein Hühnchen rupfen.", literal: "To pluck a chicken with someone.", meaning: "To have a bone to pick with someone; to settle a score.", example: "Mit dir muss ich noch ein Hühnchen rupfen!", category: "conflict", type: "idiom", tags: ["chicken", "conflict"] },
+  { id: 15, german: "Wenn die Katze aus dem Haus ist, tanzen die Mäuse.", literal: "When the cat is out of the house, the mice dance.", meaning: "When the boss/authority figure is away, others do as they please.", example: "Der Chef ist im Urlaub – wenn die Katze aus dem Haus ist, tanzen die Mäuse.", category: "behavior", type: "proverb", tags: ["cat", "mouse", "freedom"] },
+  { id: 16, german: "Perlen vor die Säue werfen.", literal: "To throw pearls before swine.", meaning: "To give something valuable to someone who doesn't appreciate it.", example: "Gute Ratschläge gib ihm nicht – das ist Perlen vor die Säue werfen.", category: "futility", type: "idiom", tags: ["pig", "value"] },
+  { id: 17, german: "Nicht alle Tassen im Schrank haben.", literal: "Not to have all cups in the cupboard.", meaning: "To be a bit crazy; not all there.", example: "Der hat doch nicht alle Tassen im Schrank!", category: "personality", type: "idiom", tags: ["crazy", "cups"] },
+  { id: 18, german: "Auf den Hund gekommen sein.", literal: "To have come to the dog.", meaning: "To have fallen on hard times; to be in a sorry state.", example: "Das Restaurant ist wirklich auf den Hund gekommen.", category: "decline", type: "idiom", tags: ["dog", "decline"] },
+
+  { id: 19, german: "Morgenstund hat Gold im Mund.", literal: "The morning hour has gold in its mouth.", meaning: "The early bird catches the worm; early risers are rewarded.", example: "Steh früh auf – Morgenstund hat Gold im Mund.", category: "time", type: "proverb", tags: ["morning", "success"] },
+  { id: 20, german: "Nach Regen kommt Sonnenschein.", literal: "After rain comes sunshine.", meaning: "After hard times, better days will come.", example: "Gib nicht auf – nach Regen kommt Sonnenschein.", category: "hope", type: "proverb", tags: ["weather", "hope"] },
+  { id: 21, german: "Andere Länder, andere Sitten.", literal: "Other countries, other customs.", meaning: "Different places have different rules and traditions; when in Rome.", example: "Wundere dich nicht – andere Länder, andere Sitten.", category: "culture", type: "proverb", tags: ["culture", "travel"] },
+  { id: 22, german: "Wie man in den Wald hineinruft, so schallt es heraus.", literal: "As you call into the forest, so it echoes back.", meaning: "You get what you give; treat others as you wish to be treated.", example: "Sei freundlich zu anderen – wie man in den Wald ruft, so schallt es heraus.", category: "relationships", type: "proverb", tags: ["forest", "karma"] },
+
+  { id: 23, german: "Jemandem auf den Zahn fühlen.", literal: "To feel someone's tooth.", meaning: "To probe someone; to test someone's knowledge or intentions.", example: "In dem Interview wird man dir auf den Zahn fühlen.", category: "communication", type: "idiom", tags: ["tooth", "test"] },
+  { id: 24, german: "Auf großem Fuß leben.", literal: "To live on a big foot.", meaning: "To live extravagantly; to live beyond one's means.", example: "Er lebt auf großem Fuß, obwohl er kein Geld hat.", category: "money", type: "idiom", tags: ["foot", "money", "lifestyle"] },
+  { id: 25, german: "Einen langen Arm haben.", literal: "To have a long arm.", meaning: "To have influence and power; to have connections.", example: "Der Bürgermeister hat einen langen Arm.", category: "power", type: "idiom", tags: ["arm", "power"] },
+  { id: 26, german: "Sich etwas hinter die Ohren schreiben.", literal: "To write something behind one's ears.", meaning: "To take note of something important; to remember something well.", example: "Schreib dir das hinter die Ohren: Pünktlichkeit zählt!", category: "memory", type: "idiom", tags: ["ear", "memory"] },
+  { id: 27, german: "Kalte Füße bekommen.", literal: "To get cold feet.", meaning: "To lose one's nerve; to back out of something.", example: "Er hat kurz vor der Hochzeit kalte Füße bekommen.", category: "fear", type: "idiom", tags: ["feet", "fear", "courage"] },
+  { id: 28, german: "Den Kopf in den Sand stecken.", literal: "To put one's head in the sand.", meaning: "To ignore reality; to bury one's head in the sand.", example: "Du kannst den Kopf nicht in den Sand stecken – das Problem geht nicht weg.", category: "attitude", type: "idiom", tags: ["head", "avoidance"] },
+  { id: 29, german: "Auf der Hand liegen.", literal: "To lie on the hand.", meaning: "To be obvious; to be self-evident.", example: "Es liegt auf der Hand, dass wir mehr üben müssen.", category: "clarity", type: "idiom", tags: ["hand", "obvious"] },
+  { id: 30, german: "Sich in die eigene Tasche lügen.", literal: "To lie into one's own pocket.", meaning: "To fool oneself; to engage in self-deception.", example: "Du lügst dir selbst in die Tasche, wenn du das glaubst.", category: "honesty", type: "idiom", tags: ["pocket", "self-deception"] },
+  { id: 31, german: "Das Herz auf der Zunge tragen.", literal: "To carry one's heart on one's tongue.", meaning: "To speak one's mind openly; to be very outspoken.", example: "Sie trägt das Herz auf der Zunge – immer ehrlich.", category: "communication", type: "idiom", tags: ["heart", "honesty"] },
+  { id: 32, german: "Jemanden auf Herz und Nieren prüfen.", literal: "To test someone on heart and kidneys.", meaning: "To test someone thoroughly; to put someone through their paces.", example: "Im Vorstellungsgespräch wurde er auf Herz und Nieren geprüft.", category: "testing", type: "idiom", tags: ["heart", "thorough"] },
+  { id: 33, german: "Hals- und Beinbruch!", literal: "Neck and leg break!", meaning: "Good luck! (said ironically — like 'break a leg')", example: "Hals- und Beinbruch bei deiner Prüfung!", category: "wishes", type: "saying", tags: ["luck", "theater"] },
+  { id: 34, german: "Sich etwas von der Seele reden.", literal: "To talk something off one's soul.", meaning: "To get something off one's chest; to unburden oneself.", example: "Ich muss mir das einfach von der Seele reden.", category: "emotion", type: "idiom", tags: ["soul", "emotion"] },
+  { id: 35, german: "Ins Fettnäpfchen treten.", literal: "To step into the little grease pot.", meaning: "To put one's foot in one's mouth; to make a social blunder.", example: "Mit dieser Bemerkung ist er ins Fettnäpfchen getreten.", category: "mistakes", type: "idiom", tags: ["blunder", "social"] },
+  { id: 36, german: "Jemandem den Daumen drücken.", literal: "To press the thumb for someone.", meaning: "To keep one's fingers crossed for someone; to wish someone luck.", example: "Ich drücke dir die Daumen bei der Prüfung!", category: "wishes", type: "idiom", tags: ["thumb", "luck"] },
+
+  { id: 37, german: "Das ist nicht jedermanns Geschmack.", literal: "That is not everyone's taste.", meaning: "That's not for everyone; it's an acquired taste.", example: "Heavy Metal ist nicht jedermanns Geschmack.", category: "preference", type: "saying", tags: ["taste", "preference"] },
+  { id: 38, german: "Das geht mir auf den Keks.", literal: "That goes on my cookie.", meaning: "That gets on my nerves; that annoys me.", example: "Dieses Lied geht mir total auf den Keks.", category: "annoyance", type: "idiom", tags: ["cookie", "annoyance"] },
+  { id: 39, german: "Alles hat ein Ende, nur die Wurst hat zwei.", literal: "Everything has an end, only the sausage has two.", meaning: "Everything comes to an end eventually.", example: "Alles hat ein Ende, nur die Wurst hat zwei – irgendwann ist Schluss.", category: "time", type: "saying", tags: ["sausage", "end"] },
+  { id: 40, german: "Das ist mir Wurst.", literal: "That is sausage to me.", meaning: "I couldn't care less; that's all the same to me.", example: "Ob wir Pasta oder Pizza essen – das ist mir Wurst.", category: "indifference", type: "idiom", tags: ["sausage", "indifference"] },
+  { id: 41, german: "Wer zuerst kommt, mahlt zuerst.", literal: "Whoever comes first, grinds first.", meaning: "First come, first served.", example: "Stell dich früh an – wer zuerst kommt, mahlt zuerst.", category: "fairness", type: "proverb", tags: ["fairness", "order"] },
+  { id: 42, german: "Seinen Senf dazugeben.", literal: "To add one's mustard.", meaning: "To put in one's two cents; to offer an unsolicited opinion.", example: "Er muss immer seinen Senf dazugeben.", category: "communication", type: "idiom", tags: ["mustard", "opinion"] },
+  { id: 43, german: "In den sauren Apfel beißen.", literal: "To bite into the sour apple.", meaning: "To bite the bullet; to do something unpleasant that has to be done.", example: "Du musst einfach in den sauren Apfel beißen und entschuldigen.", category: "courage", type: "idiom", tags: ["apple", "duty"] },
+  { id: 44, german: "Das Ei des Kolumbus.", literal: "Columbus's egg.", meaning: "A brilliantly simple solution to a difficult problem.", example: "Diese Erfindung ist das Ei des Kolumbus.", category: "solutions", type: "saying", tags: ["egg", "solution"] },
+  { id: 45, german: "Kleine Brötchen backen.", literal: "To bake small bread rolls.", meaning: "To be modest; to lower one's ambitions; to be realistic.", example: "Nach der Pleite muss er kleine Brötchen backen.", category: "humility", type: "idiom", tags: ["bread", "humility"] },
+
+  { id: 46, german: "Das kostet ein Heidengeld.", literal: "That costs a pagan's money.", meaning: "That costs a fortune; that's extremely expensive.", example: "Die Reparatur hat ein Heidengeld gekostet.", category: "money", type: "idiom", tags: ["money", "expensive"] },
+  { id: 47, german: "Auf Pump kaufen.", literal: "To buy on pump.", meaning: "To buy on credit; to live on borrowed money.", example: "Er kauft alles auf Pump – das wird ihn ruinieren.", category: "money", type: "idiom", tags: ["money", "credit"] },
+  { id: 48, german: "Geld stinkt nicht.", literal: "Money doesn't stink.", meaning: "Money is money, no matter where it comes from.", example: "Auch dieser Job ist gut – Geld stinkt nicht.", category: "money", type: "proverb", tags: ["money", "pragmatism"] },
+  { id: 49, german: "Zeit ist Geld.", literal: "Time is money.", meaning: "Don't waste time; every moment has value.", example: "Mach schneller – Zeit ist Geld!", category: "time", type: "proverb", tags: ["time", "money", "work"] },
+  { id: 50, german: "Den Kürzeren ziehen.", literal: "To pull the shorter one.", meaning: "To get the worst of a deal; to come off worst.", example: "Bei dem Vergleich hat er den Kürzeren gezogen.", category: "fairness", type: "idiom", tags: ["disadvantage", "deal"] },
+  { id: 51, german: "Auf eigenen Beinen stehen.", literal: "To stand on one's own legs.", meaning: "To be independent; to support oneself.", example: "Mit 25 stand er endlich auf eigenen Beinen.", category: "independence", type: "idiom", tags: ["independence", "legs"] },
+  { id: 52, german: "Sich keine Arbeit aus den Rippen schneiden.", literal: "Not to cut work from one's ribs.", meaning: "To be lazy; to avoid doing one's share of work.", example: "Er schneidet sich keine Arbeit aus den Rippen.", category: "laziness", type: "idiom", tags: ["work", "laziness"] },
+
+  { id: 53, german: "Der Apfel fällt nicht weit vom Stamm.", literal: "The apple doesn't fall far from the trunk.", meaning: "Children take after their parents; like father, like son.", example: "Er ist genauso dickköpfig wie sein Vater – der Apfel fällt nicht weit vom Stamm.", category: "family", type: "proverb", tags: ["apple", "family", "character"] },
+  { id: 54, german: "Übung macht den Meister.", literal: "Practice makes the master.", meaning: "Practice makes perfect.", example: "Ich lerne jeden Tag Deutsch – Übung macht den Meister.", category: "learning", type: "proverb", tags: ["practice", "skill"] },
+  { id: 55, german: "Lügen haben kurze Beine.", literal: "Lies have short legs.", meaning: "Lies don't get you far; the truth will come out.", example: "Gib es zu – Lügen haben kurze Beine.", category: "honesty", type: "proverb", tags: ["lies", "truth"] },
+  { id: 56, german: "Was du heute kannst besorgen, das verschiebe nicht auf morgen.", literal: "What you can get done today, don't postpone to tomorrow.", meaning: "Don't procrastinate; do it now.", example: "Fang jetzt an – was du heute kannst besorgen, verschiebe nicht auf morgen.", category: "action", type: "proverb", tags: ["procrastination", "time"] },
+  { id: 57, german: "Wer anderen eine Grube gräbt, fällt selbst hinein.", literal: "Whoever digs a pit for others falls into it himself.", meaning: "If you try to harm others, you'll end up hurting yourself.", example: "Wer anderen eine Grube gräbt, fällt selbst hinein.", category: "karma", type: "proverb", tags: ["karma", "revenge"] },
+  { id: 58, german: "Irren ist menschlich.", literal: "To err is human.", meaning: "Everyone makes mistakes; it's part of being human.", example: "Mach dir keine Sorgen – irren ist menschlich.", category: "mistakes", type: "proverb", tags: ["mistakes", "humanity"] },
+  { id: 59, german: "Was man nicht im Kopf hat, muss man in den Beinen haben.", literal: "What one doesn't have in the head, one must have in the legs.", meaning: "If you forget things, you end up doing extra work.", example: "Ich habe die Schlüssel wieder vergessen – was man nicht im Kopf hat, muss man in den Beinen haben.", category: "wisdom", type: "proverb", tags: ["memory", "effort"] },
+  { id: 60, german: "Ende gut, alles gut.", literal: "End good, all good.", meaning: "All's well that ends well.", example: "Es war stressig, aber wir haben es geschafft – Ende gut, alles gut.", category: "hope", type: "proverb", tags: ["ending", "success"] },
+  { id: 61, german: "Stille Wasser sind tief.", literal: "Still waters run deep.", meaning: "Quiet people often have a lot going on inside; don't judge by appearances.", example: "Sie sagt wenig, aber sie beobachtet alles – stille Wasser sind tief.", category: "personality", type: "proverb", tags: ["quiet", "depth"] },
+  { id: 62, german: "Wer suchet, der findet.", literal: "Whoever seeks, finds.", meaning: "If you look hard enough, you'll find what you're looking for.", example: "Such weiter – wer suchet, der findet.", category: "persistence", type: "proverb", tags: ["search", "persistence"] },
+  { id: 63, german: "Gelegenheit macht Diebe.", literal: "Opportunity makes thieves.", meaning: "People are tempted to do wrong when the opportunity arises.", example: "Lass das Geld nicht offen liegen – Gelegenheit macht Diebe.", category: "temptation", type: "proverb", tags: ["opportunity", "temptation"] },
+  { id: 64, german: "Viele Köche verderben den Brei.", literal: "Many cooks spoil the porridge.", meaning: "Too many people involved in a task leads to poor results.", example: "Lass uns eine Person entscheiden – viele Köche verderben den Brei.", category: "teamwork", type: "proverb", tags: ["cooking", "teamwork"] },
+  { id: 65, german: "Der frühe Vogel fängt den Wurm.", literal: "The early bird catches the worm.", meaning: "Getting up and starting early leads to success.", example: "Wach früh auf – der frühe Vogel fängt den Wurm.", category: "time", type: "proverb", tags: ["bird", "morning", "success"] },
+  { id: 66, german: "Reden ist Silber, Schweigen ist Gold.", literal: "Speaking is silver, silence is golden.", meaning: "Sometimes it's better to say nothing.", example: "Sag lieber nichts – Reden ist Silber, Schweigen ist Gold.", category: "communication", type: "proverb", tags: ["silence", "wisdom"] },
+
+  { id: 67, german: "Gleich und gleich gesellt sich gern.", literal: "Like and like likes to join.", meaning: "Birds of a feather flock together.", example: "Natürlich sind sie befreundet – gleich und gleich gesellt sich gern.", category: "relationships", type: "proverb", tags: ["similarity", "friendship"] },
+  { id: 68, german: "Aus den Augen, aus dem Sinn.", literal: "Out of the eyes, out of the mind.", meaning: "Out of sight, out of mind.", example: "Er denkt nicht mehr an sie – aus den Augen, aus dem Sinn.", category: "relationships", type: "proverb", tags: ["distance", "memory"] },
+  { id: 69, german: "In der Not frisst der Teufel Fliegen.", literal: "In need, the devil eats flies.", meaning: "Beggars can't be choosers; in desperate times, you take what you can get.", example: "Nimm die Arbeit – in der Not frisst der Teufel Fliegen.", category: "survival", type: "proverb", tags: ["need", "desperation"] },
+  { id: 70, german: "Geteiltes Leid ist halbes Leid.", literal: "Shared sorrow is half a sorrow.", meaning: "A problem shared is a problem halved; sharing troubles makes them easier to bear.", example: "Erzähl mir davon – geteiltes Leid ist halbes Leid.", category: "empathy", type: "proverb", tags: ["sharing", "sorrow"] },
+  { id: 71, german: "Geteilte Freude ist doppelte Freude.", literal: "Shared joy is double joy.", meaning: "Happiness is greater when shared with others.", example: "Feier mit uns – geteilte Freude ist doppelte Freude.", category: "happiness", type: "proverb", tags: ["sharing", "joy"] },
+  { id: 72, german: "Wer schweigt, stimmt zu.", literal: "Whoever is silent, agrees.", meaning: "Silence implies consent.", example: "Wenn du nichts sagst, nehme ich an, du bist einverstanden – wer schweigt, stimmt zu.", category: "communication", type: "proverb", tags: ["silence", "consent"] },
+  { id: 73, german: "Mit jemandem durch dick und dünn gehen.", literal: "To go through thick and thin with someone.", meaning: "To stand by someone through all difficulties.", example: "Ich gehe mit dir durch dick und dünn.", category: "loyalty", type: "idiom", tags: ["loyalty", "friendship"] },
+
+  { id: 74, german: "Da Schmetterlinge im Bauch haben.", literal: "To have butterflies in the stomach.", meaning: "To feel nervous excitement, especially about a romantic interest.", example: "Wenn sie ihn sieht, hat sie Schmetterlinge im Bauch.", category: "emotion", type: "idiom", tags: ["butterflies", "love", "nervousness"] },
+  { id: 75, german: "Ins Schwarze treffen.", literal: "To hit the black.", meaning: "To hit the nail on the head; to be exactly right.", example: "Mit dieser Analyse hast du ins Schwarze getroffen.", category: "accuracy", type: "idiom", tags: ["accuracy", "target"] },
+  { id: 76, german: "Auf dem Holzweg sein.", literal: "To be on the timber track.", meaning: "To be completely wrong; to be on the wrong track.", example: "Du bist völlig auf dem Holzweg – so funktioniert das nicht.", category: "mistakes", type: "idiom", tags: ["mistake", "direction"] },
+  { id: 77, german: "Öl ins Feuer gießen.", literal: "To pour oil on the fire.", meaning: "To make a situation worse; to add fuel to the fire.", example: "Mit dieser Aussage hat er nur Öl ins Feuer gegossen.", category: "conflict", type: "idiom", tags: ["fire", "conflict"] },
+  { id: 78, german: "Auf der falschen Hochzeit tanzen.", literal: "To dance at the wrong wedding.", meaning: "To be in the wrong place or doing the wrong thing.", example: "Du willst Karriere machen, aber dazu hast du die falsche Einstellung – du tanzt auf der falschen Hochzeit.", category: "direction", type: "idiom", tags: ["wedding", "mistake"] },
+  { id: 79, german: "Einen Strohhalm ergreifen.", literal: "To grab a straw.", meaning: "To clutch at straws; to grasp at any hope.", example: "Er ergreift jeden Strohhalm, der ihm angeboten wird.", category: "desperation", type: "idiom", tags: ["hope", "straw"] },
+  { id: 80, german: "Aus einer Mücke einen Elefanten machen.", literal: "To make an elephant out of a mosquito.", meaning: "To make a mountain out of a molehill; to exaggerate.", example: "Du machst mal wieder aus einer Mücke einen Elefanten.", category: "attitude", type: "idiom", tags: ["exaggeration", "mosquito", "elephant"] },
+  { id: 81, german: "Zwischen den Stühlen sitzen.", literal: "To sit between the chairs.", meaning: "To fall between two stools; to be caught between two options, satisfying neither.", example: "Mit seiner Meinung sitzt er zwischen den Stühlen.", category: "indecision", type: "idiom", tags: ["indecision", "compromise"] },
+  { id: 82, german: "Das Kind mit dem Bade ausschütten.", literal: "To throw the baby out with the bathwater.", meaning: "To discard something valuable while trying to get rid of something bad.", example: "Reform ja, aber schütte nicht das Kind mit dem Bade aus.", category: "caution", type: "idiom", tags: ["baby", "mistake"] },
+  { id: 83, german: "In der Klemme sitzen.", literal: "To sit in the clamp.", meaning: "To be in a tight spot; to be in a difficult situation.", example: "Ohne Geld und ohne Job sitze ich wirklich in der Klemme.", category: "problem", type: "idiom", tags: ["trouble", "stuck"] },
+  { id: 84, german: "Das Handtuch werfen.", literal: "To throw the towel.", meaning: "To throw in the towel; to give up.", example: "Nach drei Stunden hat er das Handtuch geworfen.", category: "failure", type: "idiom", tags: ["giving up", "towel"] },
+  { id: 85, german: "Auf Nummer sicher gehen.", literal: "To go on safe number.", meaning: "To play it safe; to take no chances.", example: "Ich gehe auf Nummer sicher und nehme einen Regenschirm mit.", category: "caution", type: "idiom", tags: ["safety", "caution"] },
+  { id: 86, german: "Den Nagel auf den Kopf treffen.", literal: "To hit the nail on the head.", meaning: "To say exactly the right thing; to be spot on.", example: "Du hast den Nagel auf den Kopf getroffen.", category: "accuracy", type: "idiom", tags: ["nail", "accuracy"] },
+  { id: 87, german: "Hinter jemandem her sein.", literal: "To be after someone.", meaning: "To be on someone's case; to constantly pressure someone.", example: "Die Polizei ist hinter ihm her.", category: "pursuit", type: "idiom", tags: ["pursuit", "pressure"] },
+  { id: 88, german: "Auf der Lauer liegen.", literal: "To lie in wait.", meaning: "To lie in ambush; to wait for the right moment.", example: "Er lag auf der Lauer und wartete auf seine Chance.", category: "patience", type: "idiom", tags: ["waiting", "patience"] },
+
+  { id: 89, german: "Das hat Zeit bis gestern.", literal: "That has time until yesterday.", meaning: "That's extremely urgent; it was needed yesterday.", example: "Der Bericht muss fertig sein – das hat Zeit bis gestern!", category: "urgency", type: "saying", tags: ["urgency", "time"] },
+  { id: 90, german: "Abwarten und Tee trinken.", literal: "Wait and drink tea.", meaning: "Let's wait and see; be patient.", example: "Wir können noch nichts machen – abwarten und Tee trinken.", category: "patience", type: "saying", tags: ["patience", "waiting", "tea"] },
+  { id: 91, german: "Es ist noch nicht aller Tage Abend.", literal: "It is not yet the evening of all days.", meaning: "It's not over yet; there's still time.", example: "Gib nicht auf – es ist noch nicht aller Tage Abend.", category: "hope", type: "proverb", tags: ["hope", "time"] },
+  { id: 92, german: "Gut Ding will Weile haben.", literal: "Good things need time.", meaning: "Good things take time; don't rush quality.", example: "Sei geduldig – gut Ding will Weile haben.", category: "patience", type: "proverb", tags: ["patience", "quality"] },
+  { id: 93, german: "Der hat Tomaten auf den Augen.", literal: "He has tomatoes on his eyes.", meaning: "He's blind to what's obvious; he can't see what's right in front of him.", example: "Siehst du das nicht? Der hat wohl Tomaten auf den Augen.", category: "observation", type: "idiom", tags: ["tomatoes", "blindness", "obvious"] },
+
+  { id: 94, german: "Heute mir, morgen dir.", literal: "Today me, tomorrow you.", meaning: "The tables can be turned; today you're lucky, tomorrow it could be me.", example: "Gönne ihm seinen Erfolg – heute mir, morgen dir.", category: "fairness", type: "proverb", tags: ["fairness", "luck"] },
+  { id: 95, german: "Alle guten Dinge sind drei.", literal: "All good things come in threes.", meaning: "The third time is the charm.", example: "Versuche es noch einmal – alle guten Dinge sind drei.", category: "luck", type: "proverb", tags: ["three", "luck"] },
+  { id: 96, german: "Kein Rauch ohne Feuer.", literal: "No smoke without fire.", meaning: "Where there's smoke, there's fire; rumors usually have some truth.", example: "Ich glaube, da steckt etwas dahinter – kein Rauch ohne Feuer.", category: "truth", type: "proverb", tags: ["smoke", "fire", "rumor"] },
+  { id: 97, german: "Wer rastet, der rostet.", literal: "Who rests, rusts.", meaning: "Keeping active and engaged prevents decline; keep moving.", example: "Bleib aktiv – wer rastet, der rostet.", category: "activity", type: "proverb", tags: ["rust", "activity"] },
+  { id: 98, german: "Ohne Fleiß kein Preis.", literal: "Without diligence, no prize.", meaning: "No pain, no gain; success requires hard work.", example: "Du musst mehr lernen – ohne Fleiß kein Preis.", category: "work", type: "proverb", tags: ["effort", "reward"] },
+
+  { id: 99, german: "Jemanden über den Tisch ziehen.", literal: "To pull someone over the table.", meaning: "To cheat someone; to swindle someone.", example: "Der Händler hat ihn über den Tisch gezogen.", category: "deception", type: "idiom", tags: ["cheat", "table"] },
+  { id: 100, german: "Blaumachen.", literal: "To make blue.", meaning: "To skip work or school; to play hooky.", example: "Er macht heute blau und geht angeln.", category: "work", type: "idiom", tags: ["blue", "absence", "lazy"] },
+  { id: 101, german: "Sich auf die faule Haut legen.", literal: "To lie on one's lazy skin.", meaning: "To laze around; to do nothing.", example: "Den ganzen Tag hat er sich auf die faule Haut gelegt.", category: "laziness", type: "idiom", tags: ["lazy", "skin"] },
+  { id: 102, german: "Einem auf die Sprünge helfen.", literal: "To help someone with leaps.", meaning: "To give someone a hint; to help someone get started.", example: "Soll ich dir auf die Sprünge helfen?", category: "help", type: "idiom", tags: ["help", "hint"] },
+  { id: 103, german: "Jemanden auf Trab halten.", literal: "To keep someone at a trot.", meaning: "To keep someone busy; to not let someone slack off.", example: "Die Lehrerin hält uns auf Trab.", category: "work", type: "idiom", tags: ["busy", "trot"] },
+  { id: 104, german: "Sich die Zähne daran ausbeißen.", literal: "To bite out one's teeth on it.", meaning: "To struggle with something; to meet one's match.", example: "An dieser Aufgabe haben sich schon viele die Zähne ausgebissen.", category: "difficulty", type: "idiom", tags: ["teeth", "struggle"] },
+  { id: 105, german: "Hintenherum agieren.", literal: "To act from behind.", meaning: "To act behind someone's back; to be sneaky.", example: "Er hat hintenherum agiert statt direkt zu reden.", category: "honesty", type: "idiom", tags: ["behind", "sneaky"] },
+  { id: 106, german: "Einen dicken Hals kriegen.", literal: "To get a thick neck.", meaning: "To get very angry; to be furious.", example: "Wenn ich so etwas höre, kriege ich einen dicken Hals.", category: "anger", type: "idiom", tags: ["anger", "neck"] },
+  { id: 107, german: "Auf Wolke sieben schweben.", literal: "To float on cloud seven.", meaning: "To be on cloud nine; to be extremely happy.", example: "Nach dem Heiratsantrag schwebt sie auf Wolke sieben.", category: "happiness", type: "idiom", tags: ["cloud", "love", "happiness"] },
+  { id: 108, german: "Den Braten riechen.", literal: "To smell the roast.", meaning: "To smell a rat; to sense that something is wrong.", example: "Er hat den Braten gerochen und war auf der Hut.", category: "suspicion", type: "idiom", tags: ["roast", "suspicion"] },
+  { id: 109, german: "Jemandem einen Korb geben.", literal: "To give someone a basket.", meaning: "To reject someone's romantic advances; to turn someone down.", example: "Er hat ihr einen Antrag gemacht, aber sie hat ihm einen Korb gegeben.", category: "relationships", type: "idiom", tags: ["basket", "rejection", "love"] },
+  { id: 110, german: "Das Ruder herumreißen.", literal: "To rip the rudder around.", meaning: "To turn things around; to take decisive action to reverse a bad situation.", example: "Es ist höchste Zeit, das Ruder herumzureißen.", category: "action", type: "idiom", tags: ["rudder", "change"] },
+  { id: 111, german: "Etwas auf die lange Bank schieben.", literal: "To push something onto the long bench.", meaning: "To put something off indefinitely; to procrastinate.", example: "Du schiebst das Problem schon lange auf die lange Bank.", category: "procrastination", type: "idiom", tags: ["procrastination", "bench"] },
+  { id: 112, german: "Mit dem Feuer spielen.", literal: "To play with fire.", meaning: "To take dangerous risks; to tempt fate.", example: "Wenn du das tust, spielst du mit dem Feuer.", category: "risk", type: "idiom", tags: ["fire", "danger", "risk"] },
+  { id: 113, german: "Wasser auf jemandes Mühle sein.", literal: "To be water on someone's mill.", meaning: "To play into someone's hands; to support someone's argument.", example: "Deine Aussage ist Wasser auf seine Mühle.", category: "support", type: "idiom", tags: ["water", "mill", "advantage"] },
+  { id: 114, german: "Sich verdünnisieren.", literal: "To thin oneself out.", meaning: "To make oneself scarce; to quietly disappear.", example: "Als die Arbeit begann, hat er sich verdünnisiert.", category: "avoidance", type: "saying", tags: ["disappear", "avoidance"] },
+  { id: 115, german: "Auf der Butterseite landen.", literal: "To land on the buttered side.", meaning: "To land on one's feet; to be lucky.", example: "Er landet immer auf der Butterseite.", category: "luck", type: "idiom", tags: ["butter", "luck"] },
+  { id: 116, german: "Das ist ein zweischneidiges Schwert.", literal: "That's a double-edged sword.", meaning: "Something that has both advantages and disadvantages.", example: "Diese Lösung ist ein zweischneidiges Schwert.", category: "analysis", type: "idiom", tags: ["sword", "ambiguity"] },
+  { id: 117, german: "Sich kein X für ein U vormachen lassen.", literal: "Not to let an X be passed off as a U.", meaning: "Not to be fooled; not to be taken in.", example: "Er lässt sich kein X für ein U vormachen.", category: "intelligence", type: "idiom", tags: ["deception", "smart"] },
+  { id: 118, german: "Die Flinte ins Korn werfen.", literal: "To throw the flintlock into the grain.", meaning: "To give up; to throw in the towel.", example: "Nach den ersten Schwierigkeiten wirft er gleich die Flinte ins Korn.", category: "persistence", type: "idiom", tags: ["giving up", "gun"] },
+  { id: 119, german: "Seinen Senf zu etwas geben.", literal: "To give one's mustard to something.", meaning: "To give one's opinion (often unsolicited).", example: "Er gibt immer seinen Senf dazu, auch wenn niemand fragt.", category: "communication", type: "idiom", tags: ["opinion", "mustard"] },
+  { id: 120, german: "Das schwarze Schaf der Familie sein.", literal: "To be the black sheep of the family.", meaning: "To be the family member who doesn't fit in or causes trouble.", example: "Er ist das schwarze Schaf der Familie.", category: "family", type: "idiom", tags: ["sheep", "family"] },
+  { id: 121, german: "Einen Zahn zulegen.", literal: "To add a tooth.", meaning: "To step on it; to speed up; to put in more effort.", example: "Wir müssen einen Zahn zulegen, wenn wir rechtzeitig fertig werden wollen.", category: "speed", type: "idiom", tags: ["speed", "effort"] },
+  { id: 122, german: "Etwas hinausposaunen.", literal: "To trumpet something out.", meaning: "To broadcast something far and wide; to shout something from the rooftops.", example: "Er hat es gleich in der ganzen Stadt hinausposaunen.", category: "communication", type: "idiom", tags: ["gossip", "spread"] },
+  { id: 123, german: "Sich in die Nesseln setzen.", literal: "To sit in the nettles.", meaning: "To get oneself into trouble; to put oneself in an awkward position.", example: "Mit dieser Entscheidung hat sie sich in die Nesseln gesetzt.", category: "trouble", type: "idiom", tags: ["nettles", "trouble"] },
+  { id: 124, german: "Etwas in den Wind schreiben.", literal: "To write something into the wind.", meaning: "To waste one's effort; to speak to no avail.", example: "Meine Ratschläge sind in den Wind geschrieben.", category: "futility", type: "idiom", tags: ["wind", "futility"] },
+  { id: 125, german: "Die Nerven behalten.", literal: "To keep the nerves.", meaning: "To keep one's cool; to stay calm under pressure.", example: "Er behält immer die Nerven, egal was passiert.", category: "composure", type: "idiom", tags: ["nerves", "calm"] },
+  { id: 126, german: "Auf den Putz hauen.", literal: "To bang on the plaster.", meaning: "To paint the town red; to party hard. Also: to make a fuss.", example: "Heute Nacht hauen wir auf den Putz!", category: "celebration", type: "idiom", tags: ["party", "celebrate"] },
+  { id: 127, german: "Jemandem den Schneid abkaufen.", literal: "To buy someone's courage.", meaning: "To intimidate someone; to rob someone of their nerve.", example: "Lass dir nicht den Schneid abkaufen!", category: "courage", type: "idiom", tags: ["courage", "intimidation"] },
+  { id: 128, german: "Jemanden im Regen stehen lassen.", literal: "To leave someone standing in the rain.", meaning: "To leave someone in the lurch; to abandon someone.", example: "Du kannst ihn doch nicht im Regen stehen lassen.", category: "loyalty", type: "idiom", tags: ["rain", "abandonment"] },
+  { id: 129, german: "Sich etwas nicht gefallen lassen.", literal: "Not to let something be done to oneself.", meaning: "To not put up with something; to stand up for oneself.", example: "Das lasse ich mir nicht gefallen!", category: "self-respect", type: "idiom", tags: ["respect", "boundary"] },
+  { id: 130, german: "Etwas auf die Reihe kriegen.", literal: "To get something into a row.", meaning: "To get something sorted; to manage to do something.", example: "Kriegt ihr das endlich auf die Reihe?", category: "organization", type: "idiom", tags: ["organization", "manage"] },
+
+  { id: 131, german: "Man soll den Tag nicht vor dem Abend loben.", literal: "Don't praise the day before the evening.", meaning: "Don't count your chickens before they hatch; wait until something is over before celebrating.", example: "Wart's ab – man soll den Tag nicht vor dem Abend loben.", category: "caution", type: "proverb", tags: ["caution", "patience"] },
+  { id: 132, german: "Der Schein trügt.", literal: "Appearances deceive.", meaning: "Don't judge by appearances; things are not always as they seem.", example: "Er sieht vertrauenswürdig aus, aber der Schein trügt.", category: "wisdom", type: "proverb", tags: ["appearance", "deception"] },
+  { id: 133, german: "Was Hänschen nicht lernt, lernt Hans nimmermehr.", literal: "What little Hans doesn't learn, big Hans will never learn.", meaning: "You can't teach an old dog new tricks; early education is key.", example: "Fang früh an zu lernen – was Hänschen nicht lernt, lernt Hans nimmermehr.", category: "learning", type: "proverb", tags: ["learning", "childhood"] },
+  { id: 134, german: "Ein guter Anfang ist halb gewonnen.", literal: "A good beginning is half won.", meaning: "A good start makes the rest easier.", example: "Wir haben alles vorbereitet – ein guter Anfang ist halb gewonnen.", category: "action", type: "proverb", tags: ["beginning", "success"] },
+  { id: 135, german: "Vorsicht ist die Mutter der Porzellankiste.", literal: "Caution is the mother of the china chest.", meaning: "Better safe than sorry; caution prevents breakage.", example: "Geh langsam vor – Vorsicht ist die Mutter der Porzellankiste.", category: "caution", type: "proverb", tags: ["caution", "safety"] },
+  { id: 136, german: "Kleider machen Leute.", literal: "Clothes make people.", meaning: "You are judged by what you wear; dress to impress.", example: "Zieh dich gut an – Kleider machen Leute.", category: "appearance", type: "proverb", tags: ["clothes", "appearance"] },
+  { id: 137, german: "Hochmut kommt vor dem Fall.", literal: "Pride comes before the fall.", meaning: "Overconfidence leads to failure; don't be too cocky.", example: "Sei nicht so arrogant – Hochmut kommt vor dem Fall.", category: "wisdom", type: "proverb", tags: ["pride", "failure"] },
+  { id: 138, german: "Einem Blinden von der Farbe erzählen.", literal: "To tell a blind person about color.", meaning: "To explain something to someone who cannot understand or appreciate it.", example: "Das ist wie einem Blinden von der Farbe erzählen.", category: "futility", type: "idiom", tags: ["futility", "blind"] },
+  { id: 139, german: "Aller Anfang ist schwer.", literal: "Every beginning is hard.", meaning: "Starting anything new is always difficult.", example: "Gib nicht auf – aller Anfang ist schwer.", category: "learning", type: "proverb", tags: ["beginning", "difficulty"] },
+  { id: 140, german: "Hunger ist der beste Koch.", literal: "Hunger is the best cook.", meaning: "Everything tastes better when you're hungry; necessity makes anything good.", example: "Nach dem langen Wandertag schmeckt alles – Hunger ist der beste Koch.", category: "food", type: "proverb", tags: ["hunger", "food"] },
+  { id: 141, german: "Es ist nicht alles Gold, was glänzt.", literal: "Not all that glitters is gold.", meaning: "Don't be fooled by appearances; something attractive may not be valuable.", example: "Sei vorsichtig – es ist nicht alles Gold, was glänzt.", category: "wisdom", type: "proverb", tags: ["gold", "appearance"] },
+  { id: 142, german: "Den Mantel nach dem Wind hängen.", literal: "To hang one's coat according to the wind.", meaning: "To be an opportunist; to change one's opinion to match those in power.", example: "Er hängt den Mantel immer nach dem Wind.", category: "character", type: "idiom", tags: ["opportunism", "wind"] },
+  { id: 143, german: "Borgen macht Sorgen.", literal: "Borrowing causes worries.", meaning: "Debt brings anxiety; avoid borrowing money.", example: "Leih dir nichts aus – borgen macht Sorgen.", category: "money", type: "proverb", tags: ["debt", "worry", "money"] },
+  { id: 144, german: "Der Ton macht die Musik.", literal: "The tone makes the music.", meaning: "It's not what you say but how you say it.", example: "Sei freundlicher – der Ton macht die Musik.", category: "communication", type: "proverb", tags: ["tone", "communication"] },
+  { id: 145, german: "Ehrlich währt am längsten.", literal: "Honesty lasts the longest.", meaning: "Honesty is the best policy in the long run.", example: "Sag die Wahrheit – ehrlich währt am längsten.", category: "honesty", type: "proverb", tags: ["honesty", "trust"] },
+  { id: 146, german: "Jedem das Seine.", literal: "To each his own.", meaning: "Everyone has the right to their own preferences.", example: "Er mag Jazz, sie Schlager – jedem das Seine.", category: "tolerance", type: "proverb", tags: ["preference", "tolerance"] },
+  { id: 147, german: "Wer wagt, gewinnt.", literal: "Who dares, wins.", meaning: "Fortune favors the bold; you have to take risks to succeed.", example: "Bewirb dich – wer wagt, gewinnt.", category: "courage", type: "proverb", tags: ["courage", "risk", "success"] },
+  { id: 148, german: "Man kann nicht alles haben.", literal: "One cannot have everything.", meaning: "You can't have your cake and eat it too.", example: "Entscheide dich – man kann nicht alles haben.", category: "life", type: "proverb", tags: ["choice", "limits"] },
+  { id: 149, german: "Der Mensch denkt, Gott lenkt.", literal: "Man thinks, God steers.", meaning: "Man proposes, God disposes; we plan but life decides.", example: "Ich hatte alles geplant, aber der Mensch denkt, Gott lenkt.", category: "fate", type: "proverb", tags: ["fate", "planning"] },
+  { id: 150, german: "Wer lacht, hat Recht.", literal: "Whoever laughs is right.", meaning: "Laughter proves you've won; the one laughing last laughs best.", example: "Am Ende hat er Recht behalten – wer lacht, hat Recht.", category: "humor", type: "saying", tags: ["laughter", "victory"] },
+  { id: 151, german: "In der Ruhe liegt die Kraft.", literal: "In calm lies the power.", meaning: "Composure and patience are sources of strength.", example: "Bleib ruhig – in der Ruhe liegt die Kraft.", category: "composure", type: "proverb", tags: ["calm", "strength"] },
+  { id: 152, german: "Kommt Zeit, kommt Rat.", literal: "When time comes, advice comes.", meaning: "Time will tell; sleep on it; a solution will present itself.", example: "Mach dir keine Sorgen – kommt Zeit, kommt Rat.", category: "patience", type: "proverb", tags: ["time", "solution"] },
+
+  { id: 153, german: "Das geht auf keine Kuhhaut.", literal: "That fits on no cowhide.", meaning: "That's absolutely outrageous; it beggars belief.", example: "Was er sich erlaubt, das geht auf keine Kuhhaut!", category: "outrage", type: "saying", tags: ["cow", "outrage"] },
+  { id: 154, german: "Jetzt geht's um die Wurst.", literal: "Now it's about the sausage.", meaning: "Now it's crunch time; the moment of truth has arrived.", example: "Jetzt geht's um die Wurst – alles hängt von dieser Entscheidung ab.", category: "urgency", type: "saying", tags: ["sausage", "decisive", "urgency"] },
+  { id: 155, german: "Dafür ist er zu blöd, um die Eier zu zählen.", literal: "He's too stupid even to count eggs.", meaning: "He's incompetent at even the simplest tasks (very colloquial).", example: "Der ist zu blöd, um die Eier zu zählen.", category: "insult", type: "saying", tags: ["stupid", "incompetence"] },
+  { id: 156, german: "Das ist ja ein Ding!", literal: "That's a thing!", meaning: "Well, I never! That's unbelievable!", example: "Du hast den Jackpot gewonnen? Das ist ja ein Ding!", category: "surprise", type: "saying", tags: ["surprise", "disbelief"] },
+  { id: 157, german: "Na und?", literal: "Well and?", meaning: "So what? What of it?", example: "Er ist böse auf dich. – Na und? Das ist sein Problem.", category: "indifference", type: "saying", tags: ["indifference", "so what"] },
+  { id: 158, german: "Ich verstehe nur Bahnhof.", literal: "I understand only train station.", meaning: "I don't understand a word; it's all Greek to me.", example: "Er hat so schnell geredet, ich habe nur Bahnhof verstanden.", category: "communication", type: "idiom", tags: ["understanding", "confusion"] },
+  { id: 159, german: "Quatsch mit Soße.", literal: "Nonsense with sauce.", meaning: "Complete and utter nonsense.", example: "Was du da sagst, ist Quatsch mit Soße.", category: "nonsense", type: "saying", tags: ["nonsense", "silly"] },
+  { id: 160, german: "Das ist doch keine Hexerei.", literal: "That's no witchcraft.", meaning: "That's not rocket science; it's not that hard.", example: "Du schaffst das – das ist doch keine Hexerei.", category: "ease", type: "saying", tags: ["easy", "simple"] },
+  { id: 161, german: "Da steppt der Bär!", literal: "There the bear dances (tapps)!", meaning: "There's a great party going on there; that's where the action is!", example: "In dem Club heute Nacht – da steppt der Bär!", category: "celebration", type: "saying", tags: ["bear", "party", "fun"] },
+  { id: 162, german: "Das ist Jacke wie Hose.", literal: "That's jacket like trousers.", meaning: "It's six of one and half a dozen of the other; it makes no difference.", example: "Ob wir mit dem Bus oder der U-Bahn fahren, ist Jacke wie Hose.", category: "indifference", type: "saying", tags: ["indifference", "same"] },
+  { id: 163, german: "Das passt wie die Faust aufs Auge.", literal: "That fits like a fist on the eye.", meaning: "That's completely out of place; it doesn't fit at all. (Can also mean 'perfect fit' ironically.)", example: "Sein Kommentar passte wie die Faust aufs Auge.", category: "fit", type: "saying", tags: ["fist", "eye", "misfit"] },
+  { id: 164, german: "Jetzt mal Butter bei die Fische.", literal: "Now butter to the fish.", meaning: "Get to the point; put your money where your mouth is; out with it!", example: "Hör auf zu reden und tu was – Butter bei die Fische!", category: "directness", type: "saying", tags: ["butter", "fish", "directness"] },
+  { id: 165, german: "Auf gut Deutsch sagen.", literal: "To say something in good German.", meaning: "To say something plain and straight; to put it bluntly.", example: "Auf gut Deutsch: Das gefällt mir gar nicht.", category: "directness", type: "saying", tags: ["blunt", "German", "directness"] },
+  { id: 166, german: "Holla, die Waldfee!", literal: "Hello, the forest fairy!", meaning: "Well, I'll be! / Wow, that's surprising! (expression of amazement)", example: "Der hat das wirklich geschafft? Holla, die Waldfee!", category: "surprise", type: "saying", tags: ["surprise", "fairy"] },
+  { id: 167, german: "Das ist mir schnurzpiepegal.", literal: "That's quite-twerp-equal to me.", meaning: "I couldn't care less; I'm absolutely indifferent.", example: "Was die anderen denken, ist mir schnurzpiepegal.", category: "indifference", type: "saying", tags: ["indifference", "colloquial"] },
+  { id: 168, german: "Du hast wohl Wackelpudding in den Knochen!", literal: "You have jelly pudding in your bones!", meaning: "You're a coward! You have no backbone!", example: "Sag ihm die Wahrheit – hast du Wackelpudding in den Knochen?", category: "courage", type: "saying", tags: ["cowardice", "jelly", "funny"] },
+  { id: 169, german: "Auf den Arm nehmen.", literal: "To take someone on one's arm.", meaning: "To pull someone's leg; to tease or fool someone.", example: "Willst du mich auf den Arm nehmen?", category: "humor", type: "idiom", tags: ["joke", "tease"] },
+  { id: 170, german: "Das ist alles für die Katz.", literal: "That's all for the cat.", meaning: "That was all for nothing; all that effort was pointless.", example: "Drei Stunden Arbeit und jetzt das – das ist alles für die Katz.", category: "futility", type: "idiom", tags: ["cat", "futility", "wasted"] },
+
+  { id: 171, german: "Morgen, morgen, nur nicht heute, sagen alle faulen Leute.", literal: "Tomorrow, tomorrow, just not today, say all lazy people.", meaning: "Procrastinators always delay; don't put off till tomorrow what you can do today.", example: "Fang jetzt an – morgen, morgen, nur nicht heute, sagen alle faulen Leute.", category: "procrastination", type: "proverb", tags: ["lazy", "tomorrow", "procrastination"] },
+  { id: 172, german: "Wer A sagt, muss auch B sagen.", literal: "Whoever says A must also say B.", meaning: "You have to follow through; if you start something, you must finish it.", example: "Du hast angefangen, also musst du weitermachen – wer A sagt, muss auch B sagen.", category: "commitment", type: "proverb", tags: ["commitment", "follow-through"] },
+  { id: 173, german: "Keine Antwort ist auch eine Antwort.", literal: "No answer is also an answer.", meaning: "Silence can be just as telling as words.", example: "Sie hat nicht zurückgerufen – keine Antwort ist auch eine Antwort.", category: "communication", type: "proverb", tags: ["silence", "answer"] },
+  { id: 174, german: "Zwei Fliegen mit einer Klappe schlagen.", literal: "To hit two flies with one swatter.", meaning: "To kill two birds with one stone.", example: "Ich erledige beide Aufgaben gleichzeitig – zwei Fliegen mit einer Klappe.", category: "efficiency", type: "idiom", tags: ["flies", "efficiency"] },
+  { id: 175, german: "Mit Kanonen auf Spatzen schießen.", literal: "To shoot at sparrows with cannons.", meaning: "To use a sledgehammer to crack a nut; to use disproportionate force.", example: "Du rufst die Polizei wegen so einer Kleinigkeit? Das heißt mit Kanonen auf Spatzen schießen.", category: "proportion", type: "idiom", tags: ["cannon", "sparrow", "overkill"] },
+  { id: 176, german: "Den Wald vor lauter Bäumen nicht sehen.", literal: "Not to see the forest for all the trees.", meaning: "To miss the big picture by focusing too much on details.", example: "Du verlierst dich in Einzelheiten – du siehst den Wald vor lauter Bäumen nicht.", category: "perspective", type: "idiom", tags: ["forest", "trees", "perspective"] },
+  { id: 177, german: "Auf dem Schlauch stehen.", literal: "To stand on the hose.", meaning: "To not understand something; to draw a blank.", example: "Ich stehe gerade auf dem Schlauch – kannst du es mir nochmal erklären?", category: "understanding", type: "idiom", tags: ["confusion", "blank"] },
+  { id: 178, german: "Einen Narren an jemandem gefressen haben.", literal: "To have eaten a fool for someone.", meaning: "To be crazy about someone; to be infatuated.", example: "Er hat an ihr einen Narren gefressen.", category: "love", type: "idiom", tags: ["fool", "love", "infatuation"] },
+  { id: 179, german: "Mit allen Wassern gewaschen sein.", literal: "To have been washed with all waters.", meaning: "To be cunning and experienced; to know all the tricks.", example: "Sie ist mit allen Wassern gewaschen – lass dich nicht täuschen.", category: "experience", type: "idiom", tags: ["cunning", "experience"] },
+  { id: 180, german: "Das Kind beim Namen nennen.", literal: "To name the child by its name.", meaning: "To call a spade a spade; to state things plainly.", example: "Lass uns das Kind beim Namen nennen: Das war ein Fehler.", category: "directness", type: "idiom", tags: ["directness", "honesty"] },
+  { id: 181, german: "Wie Hund und Katze leben.", literal: "To live like dog and cat.", meaning: "To fight like cat and dog; to constantly argue.", example: "Die beiden leben wie Hund und Katze.", category: "conflict", type: "idiom", tags: ["dog", "cat", "conflict"] },
+  { id: 182, german: "Die Kirche im Dorf lassen.", literal: "To leave the church in the village.", meaning: "Don't go too far; keep things in proportion.", example: "Das ist übertrieben – lass die Kirche im Dorf.", category: "proportion", type: "idiom", tags: ["church", "proportion"] },
+  { id: 183, german: "Seinen Frieden mit etwas machen.", literal: "To make one's peace with something.", meaning: "To come to terms with something; to accept something.", example: "Er hat seinen Frieden mit der Entscheidung gemacht.", category: "acceptance", type: "idiom", tags: ["peace", "acceptance"] },
+  { id: 184, german: "Auf der Strecke bleiben.", literal: "To remain on the track.", meaning: "To fall by the wayside; to be left behind.", example: "Wer sich nicht anpasst, bleibt auf der Strecke.", category: "competition", type: "idiom", tags: ["competition", "failure"] },
+  { id: 185, german: "Das Blaue vom Himmel versprechen.", literal: "To promise the blue from the sky.", meaning: "To promise the moon; to make unrealistic promises.", example: "Er verspricht ihr das Blaue vom Himmel.", category: "promises", type: "idiom", tags: ["promise", "sky", "unrealistic"] },
+  { id: 186, german: "Etwas auf die leichte Schulter nehmen.", literal: "To take something on the light shoulder.", meaning: "To take something lightly; not to take something seriously.", example: "Nimm das nicht auf die leichte Schulter.", category: "seriousness", type: "idiom", tags: ["shoulder", "serious"] },
+  { id: 187, german: "Es faustdick hinter den Ohren haben.", literal: "To have it fist-thick behind the ears.", meaning: "To be sly; to be cleverer than one looks.", example: "Das Kind hat es faustdick hinter den Ohren.", category: "cleverness", type: "idiom", tags: ["clever", "sly", "fist"] },
+  { id: 188, german: "Doppelt gemoppelt hält besser.", literal: "Doubly doubled holds better.", meaning: "Belts and braces; doing something twice for extra security (even if redundant).", example: "Ich speichere alles zweimal – doppelt gemoppelt hält besser.", category: "caution", type: "saying", tags: ["redundancy", "caution"] },
+  { id: 189, german: "Ich glaub, mein Schwein pfeift!", literal: "I think my pig is whistling!", meaning: "Well, I never! That's unbelievable! (expression of great surprise)", example: "Du hast wirklich gewonnen? Ich glaub, mein Schwein pfeift!", category: "surprise", type: "saying", tags: ["pig", "surprise", "disbelief"] },
+  { id: 190, german: "Den langen Löffel abgeben.", literal: "To hand in the long spoon.", meaning: "To kick the bucket; to die (humorous).", example: "Bevor ich den langen Löffel abgebe, will ich noch viel erleben.", category: "death", type: "idiom", tags: ["death", "spoon", "humorous"] },
+  { id: 191, german: "Alter schützt vor Torheit nicht.", literal: "Age does not protect against folly.", meaning: "Even old people can be foolish; you're never too old to make mistakes.", example: "Er ist 70 und verliebt – Alter schützt vor Torheit nicht.", category: "age", type: "proverb", tags: ["age", "folly", "wisdom"] },
+  { id: 192, german: "Wer nicht hören will, muss fühlen.", literal: "Whoever doesn't want to listen must feel.", meaning: "If you won't listen to warnings, you'll learn the hard way.", example: "Ich habe ihn gewarnt – wer nicht hören will, muss fühlen.", category: "consequences", type: "proverb", tags: ["listening", "consequences"] },
+  { id: 193, german: "Es ist nicht so heiß, wie es gekocht wird.", literal: "Things are not as hot as they are cooked.", meaning: "Things are not as bad as they seem; don't worry unnecessarily.", example: "Beruhige dich – es wird nie so heiß gegessen, wie es gekocht wird.", category: "attitude", type: "proverb", tags: ["calm", "worry", "perspective"] },
+  { id: 194, german: "Wer einmal lügt, dem glaubt man nicht.", literal: "Whoever lies once is not believed.", meaning: "Once a liar, always a liar; trust, once lost, is hard to regain.", example: "Er hat gelogen – wer einmal lügt, dem glaubt man nicht.", category: "trust", type: "proverb", tags: ["lying", "trust"] },
+  { id: 195, german: "Rom wurde auch nicht an einem Tag erbaut.", literal: "Rome was also not built in a day.", meaning: "Great things take time; be patient.", example: "Hab Geduld – Rom wurde auch nicht an einem Tag erbaut.", category: "patience", type: "proverb", tags: ["Rome", "time", "patience"] },
+  { id: 196, german: "Besser spät als nie.", literal: "Better late than never.", meaning: "It's better to do something late than not at all.", example: "Er hat sich endlich entschuldigt – besser spät als nie.", category: "time", type: "proverb", tags: ["late", "time", "effort"] },
+  { id: 197, german: "Man ist so alt, wie man sich fühlt.", literal: "One is as old as one feels.", meaning: "Age is just a state of mind.", example: "Er ist 60 aber fit wie ein Turnschuh – man ist so alt, wie man sich fühlt.", category: "age", type: "saying", tags: ["age", "mindset"] },
+  { id: 198, german: "Wer den Pfennig nicht ehrt, ist des Talers nicht wert.", literal: "Who doesn't respect the penny, isn't worthy of the thaler.", meaning: "If you can't handle small amounts, you don't deserve larger ones; save the pennies and the pounds will save themselves.", example: "Gib sorgfältig aus – wer den Pfennig nicht ehrt, ist des Talers nicht wert.", category: "money", type: "proverb", tags: ["money", "respect"] },
+  { id: 199, german: "Schnell gewonnen, schnell zerronnen.", literal: "Quickly won, quickly melted.", meaning: "Easy come, easy go.", example: "Er hat das Geld beim Glücksspiel verloren – schnell gewonnen, schnell zerronnen.", category: "money", type: "proverb", tags: ["money", "luck", "spending"] },
+  { id: 200, german: "Mit dem Kopf durch die Wand wollen.", literal: "To want to go through the wall with one's head.", meaning: "To be pig-headed; to stubbornly try to force something impossible.", example: "Er will immer mit dem Kopf durch die Wand – ohne Kompromiss.", category: "stubbornness", type: "idiom", tags: ["stubborn", "wall", "head"] }
+];
+
+
+function shuffle(arr, seed) {
+  var s = (seed >>> 0), a = arr.slice(), i = a.length, j, t;
+  function r() { s = ((s * 1664525 + 1013904223) & 0xFFFFFFFF) >>> 0; return s / 4294967295; }
+  while (i--) { j = Math.floor(r() * (i + 1)); t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+var today = new Date();
+var seed  = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+var order = shuffle(DB, seed);
+var idx   = 0;
+
+
+document.getElementById('ddate').textContent = today.toLocaleDateString('en-GB', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+
+var CE = {everyday:'[coffee]',attitude:'[mind]',problem:'[tool]',mistakes:'[x]',distance:'[pin]',luck:'[clover]',
+  secrets:'[shh]',society:'[group]',action:'[bolt]',futility:'[spiral]',money:'[euro]',work:'[brief]',family:'[family]',
+  learning:'[book]',honesty:'[check]',relationships:'[heart]',hope:'[sunrise]',time:'[clock]',patience:'[hourglass]',
+  communication:'[chat]',conflict:'[swords]',fear:'[scared]',courage:'[lion]',humor:'[laugh]',happiness:'[star]',
+  food:'[food]',wisdom:'[owl]',culture:'[globe]',independence:'[eagle]',anger:'[fire]',emotion:'[thought]',
+  celebration:'[party]',caution:'[warn]',laziness:'[sofa]',love:'[love]',death:'[moon]',age:'[cake]',
+  surprise:'[wow]',indifference:'[shrug]',deception:'[card]',persistence:'[muscle]',fate:'[star2]'};
+var TL = {idiom:'Idiom', proverb:'Sprichwort', saying:'Redewendung'};
+
+function g(id) { return document.getElementById(id); }
+function sid(it) { return 'i:' + it.id; }
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function updateSaveBtn(it) {
+  var sv = isSaved(sid(it));
+  g('sHrt').textContent = sv ? '♥' : '♡';
+  g('sLbl').textContent = sv ? 'Saved' : 'Save';
+  g('sbtn').classList.toggle('saved', sv);
+}
+
+
+function applyRender(it) {
+  g('gtxt').textContent      = it.german;
+  g('vLit').textContent      = it.literal;
+  g('vCat').textContent      = (CE[it.category] || '✦') + ' ' + (it.category || '');
+  g('vMean').textContent     = it.meaning;
+  g('vEx').textContent       = it.example;
+  g('type-pill').textContent = TL[it.type] || it.type || 'Phrase';
+  g('cnt-n').textContent     = idx + 1;
+  g('cnt-t').textContent     = 'of ' + order.length;
+  g('prog-f').style.width    = ((idx + 1) / order.length * 100) + '%';
+  updateSaveBtn(it);
+}
+
+function render(animate) {
+  var it = order[idx];
+  if (!it) return;
+  if (animate) {
+    var el = g('gtxt');
+    el.classList.add('out');
+    setTimeout(function() { applyRender(it); el.classList.remove('out'); }, 230);
+  } else {
+    applyRender(it);
+  }
+}
+
+
+function prev() { idx = (idx - 1 + order.length) % order.length; render(true); }
+function next() { idx = (idx + 1) % order.length; render(true); }
+g('btnP').addEventListener('click', prev);
+g('btnN').addEventListener('click', next);
+
+
+g('sbtn').addEventListener('click', function() {
+  var it = order[idx], id = sid(it);
+  if (isSaved(id)) { remSaved(id); } 
+  else { addSaved(id, {label:it.german, meaning:it.meaning.slice(0,70), type:it.type}); }
+  updateSaveBtn(it);
+});
+
+
+document.addEventListener('keydown', function(e) {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'ArrowLeft')  { e.preventDefault(); prev(); }
+  if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
+  if (e.key === 's' || e.key === 'S') { g('sbtn').click(); }
+});
+
+
+var tx = 0;
+document.addEventListener('touchstart', function(e) { tx = e.touches[0].clientX; }, {passive:true});
+document.addEventListener('touchend',   function(e) {
+  var dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 55) { dx < 0 ? next() : prev(); }
+}, {passive:true});
+
+
+function doSearch() {
+  var q = g('sq').value.trim().toLowerCase();
+  var res = g('sres');
+  if (!q) { res.innerHTML = '<p style="color:#aaa;font-size:13px;padding:8px 0">Start typing to search idioms and all word pages…</p>'; return; }
+
+  // Search idioms locally
+  var idiomHits = DB.filter(function(it) {
+    return it.german.toLowerCase().indexOf(q) >= 0 ||
+           it.meaning.toLowerCase().indexOf(q) >= 0 ||
+           (it.category||'').toLowerCase().indexOf(q) >= 0;
+  });
+
+  // Search word pages from localStorage index (populated by word pages via SharedApp)
+  var wordHits = [];
+  try {
+    var idx2 = JSON.parse(localStorage.getItem('searchIndexV3') || '{}');
+    wordHits = Object.values(idx2).filter(function(it) {
+      return (it.label||'').toLowerCase().indexOf(q) >= 0 ||
+             (it.translation||'').toLowerCase().indexOf(q) >= 0;
+    });
+    // Exclude idiom results already shown
+    wordHits = wordHits.filter(function(it) { return it.category !== 'Idioms'; });
+  } catch(e) {}
+
+  if (!idiomHits.length && !wordHits.length) {
+    res.innerHTML = '<p style="color:#aaa;font-size:13px;padding:8px 0">No matches found.</p>';
+    return;
+  }
+
+  res.innerHTML = '';
+
+  // Idiom results (navigate in-page)
+  if (idiomHits.length) {
+    var hdr = document.createElement('div');
+    hdr.style.cssText = 'font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#999;padding:8px 4px 4px;font-weight:700;border-bottom:1px solid #f0f0f0;';
+    hdr.textContent = 'Idioms & Proverbs';
+    res.appendChild(hdr);
+    idiomHits.slice(0, 20).forEach(function(it) {
+      var div = document.createElement('div');
+      div.className = 'mrow';
+      div.innerHTML = '<div><strong style="font-size:14px">' + esc(it.german) + '</strong><br><small style="color:#888;font-size:12px">' + esc(it.meaning.slice(0,65)) + '</small></div>';
+      div.addEventListener('click', function() {
+        var i = order.indexOf(it);
+        if (i < 0) { order.unshift(it); i = 0; }
+        idx = i; render(false); closeM('mSearch');
+      });
+      res.appendChild(div);
+    });
+  }
+
+  // Word results grouped by category (navigate to their page)
+  if (wordHits.length) {
+    var cats = {};
+    wordHits.slice(0, 60).forEach(function(it) {
+      var c = it.category || 'Words';
+      if (!cats[c]) cats[c] = [];
+      cats[c].push(it);
+    });
+    Object.keys(cats).sort().forEach(function(cat) {
+      var hdr2 = document.createElement('div');
+      hdr2.style.cssText = 'font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#999;padding:8px 4px 4px;font-weight:700;border-bottom:1px solid #f0f0f0;margin-top:6px;';
+      hdr2.textContent = cat;
+      res.appendChild(hdr2);
+      cats[cat].forEach(function(it) {
+        var div = document.createElement('div');
+        div.className = 'mrow';
+        var dest = (it.url || '#') + (it.level && it.index !== undefined ? '#jump:' + it.level + ':' + it.index : '');
+        div.innerHTML = '<div><strong style="font-size:14px">' + esc(it.label||'') + '</strong>' +
+          (it.level ? '<span style="font-size:10px;color:#bbb;margin-left:6px">' + it.level.toUpperCase() + '</span>' : '') +
+          '<br><small style="color:#888;font-size:12px">' + esc((it.translation||'').slice(0,65)) + '</small></div>' +
+          '<span style="font-size:11px;color:#aaa;white-space:nowrap;padding:2px 8px;border:1px solid #eee;border-radius:6px;flex-shrink:0">' + esc((it.url||'').replace('.html','')) + '</span>';
+        div.addEventListener('click', function() {
+          window.location.href = dest;
+        });
+        res.appendChild(div);
+      });
+    });
+  }
+}
+
+
+function renderSaved() {
+  var res = g('svres');
+  if (!saved.length) { res.innerHTML = '<p style="color:#aaa;font-size:13px;padding:8px 0">Nothing saved yet — tap ♡ on a phrase.</p>'; return; }
+  res.innerHTML = '';
+  saved.forEach(function(id) {
+    var m = savedMeta[id] || {};
+    var div = document.createElement('div');
+    div.className = 'mrow';
+    div.innerHTML = '<div><strong style="font-size:14px">' + esc(m.label||id) + '</strong><br><small style="color:#888;font-size:12px">' + esc(m.meaning||'') + '</small></div>' +
+      '<button style="background:none;border:1px solid #ddd;border-radius:999px;padding:3px 10px;cursor:pointer;font-size:13px" data-rid="' + esc(id) + '">✕</button>';
+    div.querySelector('button').addEventListener('click', function(e) {
+      e.stopPropagation(); remSaved(e.target.dataset.rid); renderSaved();
+    });
+    res.appendChild(div);
+  });
+}
+
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function() { render(false); });
+} else {
+  render(false);
+}
+</script>
+</body>
+</html>
