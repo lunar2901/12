@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Daily Sentences · German Learning</title>
+<style>
+  :root {
+    --bg:#0f1117; --surface:#1a1d27; --card:#22263a; --accent:#7c6fcd;
+    --accent2:#56b4d3; --gold:#f5c542; --green:#4caf7d; --red:#e05a5a;
+    --text:#e2e4ef; --muted:#7a7f9a; --border:#2e3150;
+    --font:'Inter',system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh}
+
+  /* NAV */
+  nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
+  .nav-logo{font-weight:700;font-size:1.1rem;color:var(--accent);text-decoration:none}
+  .nav-links{display:flex;gap:4px;align-items:center}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:.82rem;font-weight:500;padding:6px 10px;border-radius:8px;transition:.2s}
+  .nav-links a:hover,.nav-links a.active{background:#2e3150;color:var(--text)}
+  .hamburger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:4px}
+  .hamburger span{width:22px;height:2px;background:var(--text);border-radius:2px;display:block}
+
+  /* HERO */
+  .hero{background:linear-gradient(135deg,#1a2640 0%,#1e1a3e 100%);border-bottom:1px solid var(--border);padding:32px 24px 28px;text-align:center}
+  .hero h1{font-size:1.8rem;font-weight:700;margin-bottom:8px}
+  .hero h1 span{color:var(--accent2)}
+  .hero p{color:var(--muted);font-size:.95rem;max-width:600px;margin:0 auto 20px}
+  .hero-stats{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+  .hero-stat{background:rgba(255,255,255,.05);border:1px solid var(--border);padding:10px 20px;border-radius:10px;font-size:.85rem}
+  .hero-stat strong{color:var(--accent);display:block;font-size:1.2rem;font-weight:700}
+
+  /* LAYOUT */
+  .page-wrap{max-width:1300px;margin:0 auto;padding:24px;display:grid;grid-template-columns:260px 1fr;gap:24px;align-items:start}
+  @media(max-width:900px){.page-wrap{grid-template-columns:1fr}}
+
+  /* SIDEBAR */
+  .sidebar{position:sticky;top:72px}
+  .sidebar-section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px}
+  .sidebar-section h3{font-size:.82rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+  .search-wrap{position:relative;margin-bottom:12px}
+  .search-wrap input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:9px 16px 9px 36px;border-radius:8px;font-size:.87rem;outline:none;transition:.2s}
+  .search-wrap input:focus{border-color:var(--accent)}
+  .search-wrap::before{content:"🔍";position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:.85rem}
+  .cat-list{display:flex;flex-direction:column;gap:4px}
+  .cat-item{padding:8px 10px;border-radius:8px;cursor:pointer;font-size:.87rem;transition:.2s;display:flex;justify-content:space-between;align-items:center;color:var(--muted)}
+  .cat-item:hover{background:var(--surface);color:var(--text)}
+  .cat-item.active{background:rgba(124,111,205,.2);color:var(--accent);font-weight:600}
+  .cat-count{font-size:.75rem;background:var(--surface);padding:2px 7px;border-radius:6px}
+  .lvl-filters{display:flex;flex-wrap:wrap;gap:6px}
+  .lvl-btn{padding:5px 12px;border-radius:7px;border:1px solid var(--border);background:transparent;cursor:pointer;font-size:.8rem;font-weight:600;color:var(--muted);transition:.2s}
+  .lvl-btn.active,.lvl-btn:hover{color:#fff;border-color:transparent}
+  .lvl-btn.A1.active{background:#1a6a3a;color:#4cef8d}
+  .lvl-btn.A2.active{background:#1a5a2a;color:#56d490}
+  .lvl-btn.B1.active{background:#5a5a00;color:#ffe040}
+  .lvl-btn.B2.active{background:#5a2a00;color:#e08050}
+  .lvl-btn.C1.active{background:#5a0a0a;color:#ff6060}
+  .lvl-btn.C2.active{background:#400040;color:#d060d0}
+
+  /* RESULTS */
+  .results-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+  .results-count{font-size:.85rem;color:var(--muted)}
+  .view-toggle{display:flex;gap:6px}
+  .view-btn{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:6px 12px;border-radius:8px;cursor:pointer;font-size:.82rem;transition:.2s}
+  .view-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+  /* CONVERSATION CARDS */
+  .conv-card{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:20px;overflow:hidden;transition:.2s}
+  .conv-card:hover{border-color:#3e4470}
+  .conv-header{padding:16px 20px;display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none}
+  .conv-icon{font-size:1.4rem;width:40px;text-align:center}
+  .conv-title{font-weight:600;font-size:.95rem}
+  .conv-meta{display:flex;gap:8px;margin-top:4px;flex-wrap:wrap}
+  .conv-chevron{margin-left:auto;color:var(--muted);transition:.3s;font-size:1rem}
+  .conv-card.open .conv-chevron{transform:rotate(180deg)}
+  .conv-body{display:none;padding:0 20px 20px}
+  .conv-card.open .conv-body{display:block}
+
+  /* EXCHANGES / BUBBLE STYLE */
+  .exchange{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start}
+  .exchange:nth-child(odd) .bubble-de{background:#1c2450;border:1px solid #2e3a70}
+  .exchange:nth-child(even) .bubble-de{background:#1e2a40;border:1px solid #2a3a60}
+  .line-num{color:var(--muted);font-size:.75rem;font-weight:600;min-width:22px;padding-top:10px;text-align:right}
+  .bubble-wrap{flex:1}
+  .bubble-de{border-radius:12px 12px 12px 4px;padding:10px 14px;font-size:.92rem;line-height:1.5}
+  .bubble-de strong{color:var(--accent2)}
+  .bubble-en{color:var(--muted);font-size:.82rem;margin-top:4px;padding-left:4px;font-style:italic}
+  .show-en-toggle{display:flex;gap:8px;align-items:center;margin-bottom:16px}
+  .toggle-switch{position:relative;width:40px;height:22px;cursor:pointer}
+  .toggle-switch input{opacity:0;width:0;height:0;position:absolute}
+  .toggle-track{position:absolute;inset:0;background:#333;border-radius:11px;transition:.2s}
+  .toggle-switch input:checked + .toggle-track{background:var(--accent)}
+  .toggle-thumb{position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:3px;left:3px;transition:.2s}
+  .toggle-switch input:checked ~ .toggle-thumb{left:21px}
+  .toggle-label{font-size:.83rem;color:var(--muted)}
+  .hidden-en .bubble-en{visibility:hidden;height:0;margin:0;overflow:hidden}
+
+  /* SENTENCE LIST VIEW */
+  .sentence-list{display:none}
+  .sentence-list.visible{display:block}
+  .conv-card.list-mode{border-radius:0;border-left:none;border-right:none;border-top:none;margin-bottom:0}
+  .conv-card.list-mode:last-child{border-bottom:none}
+  .sent-item{padding:10px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:.88rem}
+  .sent-item:last-child{border-bottom:none}
+  .sent-de{color:var(--text)}
+  .sent-en{color:var(--muted)}
+
+  /* BADGES */
+  .lvl-badge{padding:3px 8px;border-radius:6px;font-size:.73rem;font-weight:700}
+  .lvl-A1{background:#1a3a1a;color:#4caf7d}.lvl-A2{background:#1a3020;color:#56c490}
+  .lvl-B1{background:#2a2a00;color:#c9a800}.lvl-B2{background:#2a1a00;color:#e08020}
+  .lvl-C1{background:#2a0a0a;color:#e05050}.lvl-C2{background:#200020;color:#c040c0}
+  .cat-badge{padding:3px 8px;border-radius:6px;font-size:.73rem;background:#1e2a40;color:#56b4d3}
+
+  /* EMPTY */
+  .empty{text-align:center;padding:60px;color:var(--muted)}
+  .empty .icon{font-size:3rem;margin-bottom:12px}
+
+  /* DRAWER */
+  .drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:199}
+  .drawer{position:fixed;right:-280px;top:0;bottom:0;width:260px;background:var(--surface);z-index:200;padding:24px 16px;transition:.3s;border-left:1px solid var(--border);overflow-y:auto}
+  .drawer.open{right:0}
+  .drawer-overlay.open{display:block}
+  .drawer-close{background:none;border:none;color:var(--text);font-size:1.4rem;cursor:pointer;float:right;margin-bottom:20px}
+  .drawer a{display:block;color:var(--muted);text-decoration:none;padding:10px 12px;border-radius:8px;font-weight:500;font-size:.9rem;margin-bottom:4px}
+  .drawer a:hover,.drawer a.active{background:#2e3150;color:var(--text)}
+
+  @media(max-width:768px){
+    .nav-links{display:none}
+    .hamburger{display:flex}
+    .sidebar{position:static}
+    .cat-list{flex-direction:row;flex-wrap:wrap}
+    .cat-item{padding:5px 10px;border:1px solid var(--border);border-radius:8px}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">🇩🇪 Deutsch</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="verbs.html">Verbs</a>
+    <a href="nouns.html">Nouns</a>
+    <a href="adjectives.html">Adjectives</a>
+    <a href="adverbs.html">Adverbs</a>
+    <a href="grammar.html">Grammar</a>
+    <a href="collocations.html">Combinations</a>
+    <a href="sentences.html" class="active">Sentences</a>
+    <a href="practice.html">Practice</a>
+    <a href="progress.html">Progress</a>
+  </div>
+  <button class="hamburger" id="hamburgerBtn"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<div class="drawer" id="drawer">
+  <button class="drawer-close" id="drawerClose">✕</button><br>
+  <a href="index.html">Home</a>
+  <a href="verbs.html">Verbs</a>
+  <a href="nouns.html">Nouns</a>
+  <a href="adjectives.html">Adjectives</a>
+  <a href="adverbs.html">Adverbs</a>
+  <a href="grammar.html">Grammar</a>
+  <a href="collocations.html">Combinations</a>
+  <a href="sentences.html" class="active">Sentences</a>
+  <a href="practice.html">Practice</a>
+  <a href="progress.html">Progress</a>
+</div>
+
+<div class="hero">
+  <h1>Daily Life <span>Sentences</span></h1>
+  <p>Real German conversations across everyday situations — presented as natural dialogue with German and English side by side. Perfect for immersion learning.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><strong id="heroConvs">—</strong>Conversations</div>
+    <div class="hero-stat"><strong id="heroSents">—</strong>Sentence Pairs</div>
+    <div class="hero-stat"><strong id="heroCats">—</strong>Categories</div>
+  </div>
+</div>
+
+<div class="page-wrap">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <h3>Search</h3>
+      <div class="search-wrap">
+        <input type="text" id="searchInput" placeholder="Search sentences…">
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h3>Category</h3>
+      <div class="cat-list" id="catList">
+        <div class="cat-item active" data-cat="all">All <span class="cat-count" id="totalCount">—</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h3>Level</h3>
+      <div class="lvl-filters" id="lvlFilters">
+        <button class="lvl-btn active" data-lvl="all">All</button>
+        <button class="lvl-btn A1" data-lvl="A1">A1</button>
+        <button class="lvl-btn A2" data-lvl="A2">A2</button>
+        <button class="lvl-btn B1" data-lvl="B1">B1</button>
+        <button class="lvl-btn B2" data-lvl="B2">B2</button>
+        <button class="lvl-btn C1" data-lvl="C1">C1</button>
+        <button class="lvl-btn C2" data-lvl="C2">C2</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main>
+    <div class="results-header">
+      <div class="results-count" id="resultsCount"></div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <label class="show-en-toggle">
+          <div class="toggle-switch">
+            <input type="checkbox" id="showEnToggle" checked>
+            <div class="toggle-track"></div>
+            <div class="toggle-thumb"></div>
+          </div>
+          <span class="toggle-label">Show English</span>
+        </label>
+        <div class="view-toggle">
+          <button class="view-btn active" id="viewConv">💬 Conversation</button>
+          <button class="view-btn" id="viewList">📋 List</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="convView"></div>
+    <div class="sentence-list" id="listView"></div>
+    <div class="empty" id="emptyState" style="display:none">
+      <div class="icon">🔍</div>
+      <p>No conversations found for that filter.</p>
+    </div>
+  </main>
+</div>
+
+<script src="js/sentences.js"></script>
+<script>
+const CAT_ICONS = {
+  'Greetings':'👋','Small Talk':'☕','Shopping':'🛍️','Health':'🏥','Work':'💼',
+  'Transport':'🚆','Restaurant':'🍽️','Home':'🏠','Social':'🎉','Banking':'🏦',
+  'University':'🎓','Technology':'💻','Personal':'💬','Phone':'📞','Complaints':'😤',
+  'Discussion':'🗣️','Daily Life':'🌅','Culture':'🌍','Expressions':'💡','Leisure':'🎸'
+};
+
+let activeCat = 'all';
+let activeLvl = 'all';
+let searchQ = '';
+let viewMode = 'conv'; // conv | list
+let showEn = true;
+
+function init() {
+  // Count stats
+  let totalSents = 0;
+  window.CONVERSATIONS.forEach(c => { totalSents += c.exchanges.length; });
+  const cats = [...new Set(window.CONVERSATIONS.map(c => c.category))].sort();
+  document.getElementById('heroConvs').textContent = window.CONVERSATIONS.length;
+  document.getElementById('heroSents').textContent = totalSents;
+  document.getElementById('heroCats').textContent = cats.length;
+  document.getElementById('totalCount').textContent = window.CONVERSATIONS.length;
+
+  // Categories
+  const catList = document.getElementById('catList');
+  cats.forEach(cat => {
+    const count = window.CONVERSATIONS.filter(c => c.category === cat).length;
+    const d = document.createElement('div');
+    d.className = 'cat-item';
+    d.dataset.cat = cat;
+    d.innerHTML = `<span>${CAT_ICONS[cat]||'📁'} ${cat}</span><span class="cat-count">${count}</span>`;
+    d.onclick = () => { activeCat = cat; updateCatActive(); render(); };
+    catList.appendChild(d);
+  });
+  catList.children[0].onclick = () => { activeCat = 'all'; updateCatActive(); render(); };
+
+  // Level filters
+  document.querySelectorAll('.lvl-btn').forEach(b => {
+    b.onclick = () => {
+      activeLvl = b.dataset.lvl;
+      document.querySelectorAll('.lvl-btn').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      render();
+    };
+  });
+
+  document.getElementById('searchInput').addEventListener('input', e => {
+    searchQ = e.target.value.toLowerCase();
+    render();
+  });
+
+  document.getElementById('showEnToggle').addEventListener('change', e => {
+    showEn = e.target.checked;
+    document.getElementById('convView').querySelectorAll('.exchange').forEach(el => {
+      el.classList.toggle('hidden-en', !showEn);
+    });
+    document.getElementById('listView').querySelectorAll('.sent-en').forEach(el => {
+      el.style.display = showEn ? '' : 'none';
+    });
+  });
+
+  document.getElementById('viewConv').onclick = () => {
+    viewMode = 'conv';
+    document.getElementById('viewConv').classList.add('active');
+    document.getElementById('viewList').classList.remove('active');
+    document.getElementById('convView').style.display = '';
+    document.getElementById('listView').classList.remove('visible');
+  };
+  document.getElementById('viewList').onclick = () => {
+    viewMode = 'list';
+    document.getElementById('viewList').classList.add('active');
+    document.getElementById('viewConv').classList.remove('active');
+    document.getElementById('convView').style.display = 'none';
+    document.getElementById('listView').classList.add('visible');
+  };
+
+  render();
+}
+
+function updateCatActive() {
+  document.querySelectorAll('.cat-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.cat === activeCat);
+  });
+}
+
+function filterData() {
+  return window.CONVERSATIONS.filter(c => {
+    if (activeCat !== 'all' && c.category !== activeCat) return false;
+    if (activeLvl !== 'all' && c.level !== activeLvl) return false;
+    if (searchQ) {
+      const hay = [c.title, c.category, ...c.exchanges.map(e=>e.de+' '+e.en)].join(' ').toLowerCase();
+      if (!hay.includes(searchQ)) return false;
+    }
+    return true;
+  });
+}
+
+function render() {
+  const data = filterData();
+  const convView = document.getElementById('convView');
+  const listView = document.getElementById('listView');
+  const empty = document.getElementById('emptyState');
+  const count = document.getElementById('resultsCount');
+
+  count.textContent = `${data.length} conversation${data.length!==1?'s':''} • ${data.reduce((a,c)=>a+c.exchanges.length,0)} sentences`;
+
+  if (data.length === 0) {
+    empty.style.display = 'block';
+    convView.innerHTML = '';
+    listView.innerHTML = '';
+    return;
+  }
+  empty.style.display = 'none';
+
+  // Conversation view
+  convView.innerHTML = data.map((c, ci) => `
+    <div class="conv-card" id="conv-${c.id}">
+      <div class="conv-header" onclick="toggleConv('conv-${c.id}')">
+        <div class="conv-icon">${CAT_ICONS[c.category]||'💬'}</div>
+        <div style="flex:1">
+          <div class="conv-title">${c.title}</div>
+          <div class="conv-meta">
+            <span class="lvl-badge lvl-${c.level}">${c.level}</span>
+            <span class="cat-badge">${c.category}</span>
+            <span style="color:var(--muted);font-size:.75rem">${c.exchanges.length} lines</span>
+          </div>
+        </div>
+        <div class="conv-chevron">▾</div>
+      </div>
+      <div class="conv-body">
+        ${c.exchanges.map((e, i) => `
+          <div class="exchange${showEn?'':' hidden-en'}">
+            <div class="line-num">${i+1}</div>
+            <div class="bubble-wrap">
+              <div class="bubble-de">${highlight(e.de, searchQ)}</div>
+              <div class="bubble-en">${e.en}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  // List view
+  listView.innerHTML = `<div style="background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden">` +
+    data.map(c => `
+      <div style="padding:12px 20px;border-bottom:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <strong>${CAT_ICONS[c.category]||'💬'} ${c.title}</strong>
+          <span class="lvl-badge lvl-${c.level}">${c.level}</span>
+        </div>
+        ${c.exchanges.map(e => `
+          <div class="sent-item">
+            <div class="sent-de">${highlight(e.de, searchQ)}</div>
+            <div class="sent-en" style="${showEn?'':'display:none'}">${e.en}</div>
+          </div>
+        `).join('')}
+      </div>
+    `).join('') + '</div>';
+
+  // Auto-open first if only one
+  if (data.length === 1) {
+    document.getElementById(`conv-${data[0].id}`).classList.add('open');
+  }
+}
+
+function toggleConv(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+}
+
+function highlight(text, q) {
+  if (!q || q.length < 2) return text;
+  try {
+    const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+    return text.replace(re, '<mark style="background:#3a3020;color:#f5c542;border-radius:3px;padding:0 2px">$1</mark>');
+  } catch(e) { return text; }
+}
+
+// Nav
+document.getElementById('hamburgerBtn').onclick = () => {
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawerOverlay').classList.add('open');
+};
+['drawerClose','drawerOverlay'].forEach(id => {
+  document.getElementById(id).onclick = () => {
+    document.getElementById('drawer').classList.remove('open');
+    document.getElementById('drawerOverlay').classList.remove('open');
+  };
+});
+
+init();
+</script>
+</body>
+</html>

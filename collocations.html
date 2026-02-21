@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Word Combinations · German Learning</title>
+<style>
+  :root {
+    --bg:#0f1117; --surface:#1a1d27; --card:#22263a; --accent:#7c6fcd;
+    --accent2:#56b4d3; --gold:#f5c542; --green:#4caf7d; --red:#e05a5a;
+    --text:#e2e4ef; --muted:#7a7f9a; --border:#2e3150;
+    --font:'Inter',system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh}
+
+  /* ─── NAV ─────────────────────────────────────────── */
+  nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
+  .nav-logo{font-weight:700;font-size:1.1rem;color:var(--accent);text-decoration:none}
+  .nav-links{display:flex;gap:4px;align-items:center}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:.82rem;font-weight:500;padding:6px 10px;border-radius:8px;transition:.2s}
+  .nav-links a:hover,.nav-links a.active{background:#2e3150;color:var(--text)}
+  .hamburger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:4px}
+  .hamburger span{width:22px;height:2px;background:var(--text);border-radius:2px;display:block}
+
+  /* ─── HERO ─────────────────────────────────────────── */
+  .hero{background:linear-gradient(135deg,#1e1a3e 0%,#1a2640 100%);border-bottom:1px solid var(--border);padding:32px 24px 28px;text-align:center}
+  .hero h1{font-size:1.8rem;font-weight:700;margin-bottom:8px}
+  .hero h1 span{color:var(--accent)}
+  .hero p{color:var(--muted);font-size:.95rem;max-width:600px;margin:0 auto 20px}
+  .hero-note{display:inline-block;background:#2c2050;border:1px solid #4a3a8a;color:#b8a9f0;padding:8px 16px;border-radius:8px;font-size:.83rem}
+
+  /* ─── LAYOUT ─────────────────────────────────────────── */
+  .page-wrap{max-width:1200px;margin:0 auto;padding:24px}
+
+  /* ─── CONTROLS ─────────────────────────────────────────── */
+  .controls{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px;align-items:center}
+  .search-wrap{flex:1;min-width:200px;position:relative}
+  .search-wrap input{width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 16px 10px 40px;border-radius:10px;font-size:.9rem;outline:none;transition:.2s}
+  .search-wrap input:focus{border-color:var(--accent)}
+  .search-wrap::before{content:"🔍";position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:.9rem}
+  .filter-row{display:flex;flex-wrap:wrap;gap:8px}
+  .filter-btn{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:7px 14px;border-radius:8px;cursor:pointer;font-size:.82rem;font-weight:500;transition:.2s}
+  .filter-btn:hover,.filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+  /* ─── STATS BAR ─────────────────────────────────────────── */
+  .stats-bar{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+  .stat-chip{background:var(--card);border:1px solid var(--border);padding:8px 16px;border-radius:8px;font-size:.82rem}
+  .stat-chip strong{color:var(--accent)}
+
+  /* ─── TABLE ─────────────────────────────────────────── */
+  .table-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+  table{width:100%;border-collapse:collapse}
+  thead{background:#1c1f35}
+  th{padding:12px 16px;text-align:left;font-size:.78rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--border)}
+  td{padding:14px 16px;border-bottom:1px solid var(--border);font-size:.9rem;vertical-align:middle}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:rgba(124,111,205,.05)}
+
+  .verb-col{color:var(--gold);font-weight:700}
+  .noun-col{color:var(--text)}
+  .example-col{color:var(--muted);font-style:italic;font-size:.85rem}
+  .trans-col{color:var(--accent2);font-size:.85rem}
+  .note-badge{display:inline-block;background:#3a2a60;border:1px solid #5a3a90;color:#c0a0ff;padding:2px 8px;border-radius:6px;font-size:.75rem;margin-top:4px}
+  .cat-badge{display:inline-block;padding:3px 9px;border-radius:6px;font-size:.75rem;font-weight:600}
+  .lvl-badge{padding:3px 9px;border-radius:6px;font-size:.75rem;font-weight:700;display:inline-block}
+  .lvl-A1{background:#1a3a1a;color:#4caf7d}.lvl-A2{background:#1a3020;color:#56c490}
+  .lvl-B1{background:#2a2a00;color:#c9a800}.lvl-B2{background:#2a1a00;color:#e08020}
+  .lvl-C1{background:#2a0a0a;color:#e05050}.lvl-C2{background:#200020;color:#c040c0}
+
+  /* ─── CARD VIEW (mobile) ─────────────────────────────────── */
+  .card-grid{display:none;grid-template-columns:1fr;gap:12px}
+  .coll-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px}
+  .coll-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+  .combo{font-size:1rem;font-weight:700}
+  .combo .verb{color:var(--gold)}
+  .combo .art{color:var(--muted)}
+  .combo .noun{color:var(--text)}
+  .coll-card .example{font-style:italic;color:var(--muted);margin:6px 0;font-size:.88rem;border-left:3px solid var(--accent);padding-left:10px}
+  .coll-card .trans{color:var(--accent2);font-size:.85rem;margin-top:4px}
+  .coll-card .note{color:#c0a0ff;font-size:.8rem;margin-top:6px}
+  .badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+
+  /* ─── EMPTY STATE ─────────────────────────────────────────── */
+  .empty{text-align:center;padding:60px 20px;color:var(--muted)}
+  .empty .icon{font-size:3rem;margin-bottom:12px}
+
+  /* ─── DRAWER NAV (mobile) ─────────────────────────────────── */
+  .drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:199}
+  .drawer{position:fixed;right:-280px;top:0;bottom:0;width:260px;background:var(--surface);z-index:200;padding:24px 16px;transition:.3s;border-left:1px solid var(--border)}
+  .drawer.open{right:0}
+  .drawer-overlay.open{display:block}
+  .drawer-close{background:none;border:none;color:var(--text);font-size:1.4rem;cursor:pointer;float:right;margin-bottom:20px}
+  .drawer a{display:block;color:var(--muted);text-decoration:none;padding:10px 12px;border-radius:8px;font-weight:500;font-size:.9rem;margin-bottom:4px}
+  .drawer a:hover,.drawer a.active{background:#2e3150;color:var(--text)}
+
+  @media(max-width:768px){
+    .nav-links{display:none}
+    .hamburger{display:flex}
+    .table-wrap{display:none}
+    .card-grid{display:grid}
+    .controls{flex-direction:column;align-items:stretch}
+    th:nth-child(4),th:nth-child(5),td:nth-child(4),td:nth-child(5){display:none}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">🇩🇪 Deutsch</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="verbs.html">Verbs</a>
+    <a href="nouns.html">Nouns</a>
+    <a href="adjectives.html">Adjectives</a>
+    <a href="adverbs.html">Adverbs</a>
+    <a href="grammar.html">Grammar</a>
+    <a href="collocations.html" class="active">Combinations</a>
+    <a href="sentences.html">Sentences</a>
+    <a href="practice.html">Practice</a>
+    <a href="progress.html">Progress</a>
+  </div>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<div class="drawer" id="drawer">
+  <button class="drawer-close" id="drawerClose">✕</button>
+  <br>
+  <a href="index.html">Home</a>
+  <a href="verbs.html">Verbs</a>
+  <a href="nouns.html">Nouns</a>
+  <a href="adjectives.html">Adjectives</a>
+  <a href="adverbs.html">Adverbs</a>
+  <a href="grammar.html">Grammar</a>
+  <a href="collocations.html" class="active">Combinations</a>
+  <a href="sentences.html">Sentences</a>
+  <a href="practice.html">Practice</a>
+  <a href="progress.html">Progress</a>
+</div>
+
+<div class="hero">
+  <h1>Word <span>Combinations</span></h1>
+  <p>Fixed verb + noun combinations (Kollokationen). Learn which verb goes with which noun — because German often surprises you: it's <em>eine Frage stellen</em>, not <em>machen</em>.</p>
+  <span class="hero-note">⚠️ These are <strong>fixed pairings</strong> — the wrong verb sounds unnatural even if you understand it</span>
+</div>
+
+<div class="page-wrap">
+  <div class="controls">
+    <div class="search-wrap">
+      <input type="text" id="searchInput" placeholder="Search verb, noun, example…">
+    </div>
+    <div class="filter-row" id="catFilters">
+      <button class="filter-btn active" data-cat="all">All</button>
+    </div>
+  </div>
+
+  <div class="stats-bar" id="statsBar"></div>
+
+  <!-- Desktop table -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Verb</th>
+          <th>+ Article + Noun</th>
+          <th>Level</th>
+          <th>Category</th>
+          <th>Example + Translation</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <!-- Mobile card grid -->
+  <div class="card-grid" id="cardGrid"></div>
+
+  <div class="empty" id="emptyState" style="display:none">
+    <div class="icon">🔍</div>
+    <p>No combinations found for that search.</p>
+  </div>
+</div>
+
+<script src="js/collocations.js"></script>
+<script>
+const CAT_COLORS = {
+  Communication:'#1e3a5f', Decisions:'#3a1e1e', Organisation:'#1e3a1e',
+  Work:'#2a1e3a', Finance:'#3a2a00', Travel:'#002a3a', Health:'#1e2a1e',
+  Education:'#2a2a1e', Time:'#2a1a2a', Relationships:'#3a1a2a',
+  Arguments:'#1a2a3a', Emotions:'#2a1a1a', Environment:'#0a2a1a',
+  Legal:'#2a2a2a', Society:'#1a1a2a', 'Tricky Pairs':'#2a0a2a'
+};
+const CAT_TEXT = {
+  Communication:'#56a0e0', Decisions:'#e06060', Organisation:'#60c060',
+  Work:'#9060e0', Finance:'#e0a000', Travel:'#00c0e0', Health:'#60e060',
+  Education:'#e0e060', Time:'#c060e0', Relationships:'#e06090',
+  Arguments:'#60a0e0', Emotions:'#e06060', Environment:'#40c080',
+  Legal:'#a0a0a0', Society:'#6090e0', 'Tricky Pairs':'#c060c0'
+};
+
+let activecat = 'all';
+let searchq = '';
+
+function init() {
+  const cats = [...new Set(window.COLLOCATIONS.map(c => c.category))].sort();
+  const cf = document.getElementById('catFilters');
+  cats.forEach(cat => {
+    const b = document.createElement('button');
+    b.className = 'filter-btn';
+    b.dataset.cat = cat;
+    b.textContent = cat;
+    b.onclick = () => { activecat = cat; document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active')); b.classList.add('active'); render(); };
+    cf.appendChild(b);
+  });
+  document.getElementById('catFilters').children[0].onclick = () => { activecat = 'all'; document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active')); document.getElementById('catFilters').children[0].classList.add('active'); render(); };
+  document.getElementById('searchInput').addEventListener('input', e => { searchq = e.target.value.toLowerCase(); render(); });
+  render();
+}
+
+function filter() {
+  return window.COLLOCATIONS.filter(c => {
+    if (activecat !== 'all' && c.category !== activecat) return false;
+    if (searchq) {
+      const hay = `${c.verb} ${c.noun} ${c.example} ${c.translation} ${c.category}`.toLowerCase();
+      if (!hay.includes(searchq)) return false;
+    }
+    return true;
+  });
+}
+
+function catBadge(cat) {
+  return `<span class="cat-badge" style="background:${CAT_COLORS[cat]||'#222'};color:${CAT_TEXT[cat]||'#aaa'}">${cat}</span>`;
+}
+
+function render() {
+  const data = filter();
+  const body = document.getElementById('tableBody');
+  const grid = document.getElementById('cardGrid');
+  const empty = document.getElementById('emptyState');
+  const stats = document.getElementById('statsBar');
+
+  // Stats
+  const cats = {};
+  data.forEach(c => { cats[c.category] = (cats[c.category]||0)+1; });
+  stats.innerHTML = `<div class="stat-chip">Showing <strong>${data.length}</strong> combinations</div>` +
+    Object.entries(cats).slice(0,5).map(([k,v])=>`<div class="stat-chip">${k}: <strong>${v}</strong></div>`).join('');
+
+  if (data.length === 0) {
+    empty.style.display = 'block';
+    body.innerHTML = '';
+    grid.innerHTML = '';
+    return;
+  }
+  empty.style.display = 'none';
+
+  // Table
+  body.innerHTML = data.map(c => `
+    <tr>
+      <td class="verb-col">${c.verb}</td>
+      <td class="noun-col">${c.article ? `<span style="color:var(--muted)">${c.article}</span> ` : ''}${c.noun}</td>
+      <td><span class="lvl-badge lvl-${c.level}">${c.level}</span></td>
+      <td>${catBadge(c.category)}</td>
+      <td>
+        <div class="example-col">${highlight(c.example, c.verb, c.noun)}</div>
+        <div class="trans-col">${c.translation}</div>
+        ${c.note ? `<div class="note-badge">💡 ${c.note}</div>` : ''}
+      </td>
+    </tr>
+  `).join('');
+
+  // Cards
+  grid.innerHTML = data.map(c => `
+    <div class="coll-card">
+      <div class="coll-card-header">
+        <div class="combo">
+          <span class="verb">${c.verb}</span>
+          ${c.article ? `<span class="art"> + ${c.article}</span>` : ''}
+          <span class="noun"> ${c.noun}</span>
+        </div>
+        <span class="lvl-badge lvl-${c.level}">${c.level}</span>
+      </div>
+      <div class="example">${highlight(c.example, c.verb, c.noun)}</div>
+      <div class="trans">${c.translation}</div>
+      ${c.note ? `<div class="note">💡 ${c.note}</div>` : ''}
+      <div class="badges">${catBadge(c.category)}</div>
+    </div>
+  `).join('');
+}
+
+function highlight(text, verb, noun) {
+  if (!text) return text;
+  // Bold the verb and noun in example
+  let h = text;
+  try {
+    const vRe = new RegExp(`\\b(${verb.split(' ')[0]}\\w*)`, 'i');
+    h = h.replace(vRe, '<strong style="color:var(--gold)">$1</strong>');
+    const nRe = new RegExp(`\\b(${noun.split(' ')[0]}\\w*)`, 'i');
+    h = h.replace(nRe, '<strong style="color:var(--text)">$1</strong>');
+  } catch(e) {}
+  return h;
+}
+
+// Nav
+document.getElementById('hamburgerBtn').onclick = () => {
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawerOverlay').classList.add('open');
+};
+document.getElementById('drawerClose').onclick = () => {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawerOverlay').classList.remove('open');
+};
+document.getElementById('drawerOverlay').onclick = () => {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawerOverlay').classList.remove('open');
+};
+
+init();
+</script>
+</body>
+</html>

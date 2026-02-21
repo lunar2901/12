@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progress — Deutsch Täglich</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🇩🇪</text></svg>">
+  <style>
+    .prog-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; margin-top:20px; }
+    .prog-card { background:#fff; border:1px solid rgba(0,0,0,.09); border-radius:16px; padding:20px; box-shadow:0 4px 14px rgba(0,0,0,.06); }
+    .prog-card h3 { font-size:14px; font-weight:800; letter-spacing:.3px; text-transform:uppercase; opacity:.55; margin:0 0 12px; }
+    .stat-big { font-size:42px; font-weight:900; line-height:1; }
+    .stat-sub { font-size:13px; opacity:.55; margin-top:4px; }
+    .bar-wrap { margin-top:6px; }
+    .bar-label { display:flex; justify-content:space-between; font-size:12px; font-weight:700; margin-bottom:4px; }
+    .bar-track { height:8px; background:rgba(0,0,0,.07); border-radius:99px; overflow:hidden; }
+    .bar-fill  { height:100%; border-radius:99px; transition:width .6s ease; }
+    .level-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-top:12px; }
+    .level-cell { border-radius:12px; padding:10px 6px; text-align:center; background:rgba(0,0,0,.04); }
+    .level-cell .lc-label { font-size:11px; font-weight:800; opacity:.6; }
+    .level-cell .lc-val   { font-size:18px; font-weight:900; margin-top:2px; }
+    .level-cell .lc-tot   { font-size:10px; opacity:.45; }
+    .cat-row  { display:flex; align-items:center; gap:12px; padding:8px 0; border-bottom:1px solid rgba(0,0,0,.06); }
+    .cat-row:last-child { border-bottom:none; }
+    .cat-icon { font-size:20px; flex-shrink:0; }
+    .cat-info { flex:1; min-width:0; }
+    .cat-name { font-weight:800; font-size:14px; }
+    .cat-stat { font-size:12px; opacity:.55; }
+    .cat-pct  { font-size:16px; font-weight:900; flex-shrink:0; }
+    .saved-list { display:flex; flex-direction:column; gap:8px; margin-top:4px; max-height:320px; overflow-y:auto; }
+    .saved-item { display:flex; justify-content:space-between; align-items:center; padding:8px 10px; background:rgba(0,0,0,.03); border-radius:10px; font-size:13px; }
+    .saved-item a { font-weight:700; color:#111; text-decoration:none; }
+    .saved-item a:hover { color:#555; }
+    .saved-trans { opacity:.5; font-size:12px; }
+    .hero-row { display:flex; gap:16px; flex-wrap:wrap; margin-top:20px; }
+    .hero-card { flex:1; min-width:140px; background:#fff; border:1px solid rgba(0,0,0,.09); border-radius:16px; padding:20px; box-shadow:0 4px 14px rgba(0,0,0,.06); text-align:center; }
+    .hero-num  { font-size:48px; font-weight:900; line-height:1; }
+    .hero-lbl  { font-size:12px; font-weight:700; opacity:.5; letter-spacing:.4px; text-transform:uppercase; margin-top:6px; }
+    .progress-ring { display:flex; justify-content:center; margin:12px 0; }
+    .empty-state { text-align:center; padding:30px 16px; opacity:.45; font-size:14px; }
+    .cta-btn { display:inline-block; margin-top:12px; padding:8px 18px; background:#111; color:#fff; border-radius:999px; text-decoration:none; font-size:13px; font-weight:700; }
+    .cta-btn:hover { opacity:.8; }
+    .heat-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:4px; margin-top:10px; }
+    .heat-cell { aspect-ratio:1; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:800; color:#fff; }
+    @media(max-width:600px){.prog-grid{grid-template-columns:1fr;}.hero-row{flex-direction:column;}}
+  </style>
+</head>
+<body>
+  <header class="main-header">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo"><a href="index.html" class="logo-home-link" title="Go to home">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="40" height="13.33" fill="#000"/>
+            <rect y="13.33" width="40" height="13.33" fill="#DD0000"/>
+            <rect y="26.67" width="40" height="13.33" fill="#FFCE00"/>
+          </svg>
+          <h1>Deutsch Täglich</h1>
+        </a></div>
+        <div class="header-actions">
+          <button class="icon-btn" id="btnSaved" type="button" aria-label="Saved words">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"></path></svg>
+          </button>
+          <button class="icon-btn menu-btn" type="button" aria-label="Menu" aria-expanded="false">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h16"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="drawer-backdrop" hidden></div>
+  <aside class="drawer" hidden>
+    <div class="drawer-top">
+      <div class="drawer-title">Menu</div>
+      <button class="icon-btn drawer-close" type="button" aria-label="Close">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18"></path><path d="M6 6l12 12"></path></svg>
+      </button>
+    </div>
+    <nav class="drawer-nav">
+      <a href="index.html" class="drawer-link">✦ Daily Idioms</a>
+      <a href="verbs.html" class="drawer-link">🔤 Verbs</a>
+      <a href="nouns.html" class="drawer-link">📦 Nouns</a>
+      <a href="adjectives.html" class="drawer-link">🎨 Adjectives</a>
+      <a href="adverbs.html" class="drawer-link">💨 Adverbs</a>
+      <a href="practice.html" class="drawer-link">✅ Practice</a>
+      <a href="grammar.html" class="drawer-link">📖 Grammar</a>
+      <a href="progress.html" class="drawer-link drawer-link--active">📊 Progress</a>
+    </nav>
+  </aside>
+
+  <div class="modal" id="savedModal" hidden>
+    <div class="modal__backdrop" data-close="savedModal"></div>
+    <div class="modal__panel">
+      <div class="modal__top"><div class="modal__title">Saved Words</div><button class="icon-btn" data-close="savedModal" aria-label="Close">✕</button></div>
+      <div id="savedResults" class="modal__results"></div>
+    </div>
+  </div>
+
+  <main class="main-content">
+    <div class="container">
+      <section style="padding-top:16px;">
+        <h2 style="font-size:1.5rem;font-weight:900;margin-bottom:4px;">📊 Your Progress</h2>
+        <p style="font-size:13px;opacity:.5;margin:0;">Tracks words marked as ✓ learned in each vocab section</p>
+      </section>
+
+      <!-- Hero stats row -->
+      <div class="hero-row" id="heroRow">
+        <div class="hero-card">
+          <div class="hero-num" id="heroTotal">—</div>
+          <div class="hero-lbl">Total Words</div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-num" id="heroLearned" style="color:#059669">—</div>
+          <div class="hero-lbl">Learned</div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-num" id="heroPct" style="color:#2563eb">—</div>
+          <div class="hero-lbl">Complete</div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-num" id="heroSaved" style="color:#be185d">—</div>
+          <div class="hero-lbl">Saved</div>
+        </div>
+      </div>
+
+      <div class="prog-grid">
+
+        <!-- Category breakdown -->
+        <div class="prog-card">
+          <h3>By Category</h3>
+          <div id="catBreakdown"></div>
+        </div>
+
+        <!-- Level heatmap -->
+        <div class="prog-card">
+          <h3>Level × Category Heatmap</h3>
+          <p style="font-size:11px;opacity:.45;margin:0 0 8px;">Darker = more complete</p>
+          <div style="display:grid;grid-template-columns:60px repeat(5,1fr);gap:4px;font-size:11px;">
+            <div></div>
+            <div style="text-align:center;font-weight:800;opacity:.5">A1</div>
+            <div style="text-align:center;font-weight:800;opacity:.5">A2</div>
+            <div style="text-align:center;font-weight:800;opacity:.5">B1</div>
+            <div style="text-align:center;font-weight:800;opacity:.5">B2</div>
+            <div style="text-align:center;font-weight:800;opacity:.5">C1</div>
+          </div>
+          <div id="heatmap" style="display:grid;grid-template-columns:60px repeat(5,1fr);gap:4px;margin-top:4px;"></div>
+        </div>
+
+        <!-- Per-level progress bars -->
+        <div class="prog-card">
+          <h3>By Level</h3>
+          <div id="levelBars"></div>
+        </div>
+
+        <!-- Saved words panel -->
+        <div class="prog-card">
+          <h3>Saved Words (<span id="savedCount">0</span>)</h3>
+          <div id="savedPanel"></div>
+        </div>
+
+      </div>
+
+      <!-- Reset section -->
+      <div style="margin-top:32px;padding:16px;background:#fff;border:1px solid rgba(0,0,0,.09);border-radius:16px;">
+        <h3 style="font-size:13px;font-weight:800;margin:0 0 8px;opacity:.6;text-transform:uppercase;letter-spacing:.3px;">Data & Reset</h3>
+        <p style="font-size:13px;opacity:.6;margin:0 0 12px;">Your progress is stored in your browser's local storage. Clearing it resets all learned/saved data.</p>
+        <button id="btnReset" style="padding:8px 18px;background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;">Reset All Progress</button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="main-footer"><div class="container"><p>&copy; 2026 German Learning App | Built with ❤️ for language learners</p></div></footer>
+
+  <!-- All DB files -->
+  <script src="js/verbs-db-a1.js"></script>
+  <script src="js/verbs-db-a2.js"></script>
+  <script src="js/verbs-db-b1.js"></script>
+  <script src="js/verbs-db-b2.js"></script>
+  <script src="js/verbs-db-c1.js"></script>
+  <script src="js/nouns-db-a1.js"></script>
+  <script src="js/nouns-db-a2.js"></script>
+  <script src="js/nouns-db-b1.js"></script>
+  <script src="js/nouns-db-b2.js"></script>
+  <script src="js/nouns-db-c1.js"></script>
+  <script src="js/adjectives-db-a1.js"></script>
+  <script src="js/adjectives-db-a2.js"></script>
+  <script src="js/adjectives-db-b1.js"></script>
+  <script src="js/adjectives-db-b2.js"></script>
+  <script src="js/adjectives-db-c1.js"></script>
+  <script src="js/adverbs-db-a1.js"></script>
+  <script src="js/adverbs-db-a2.js"></script>
+  <script src="js/adverbs-db-b1.js"></script>
+  <script src="js/adverbs-db-b2.js"></script>
+  <script src="js/adverbs-db-c1.js"></script>
+  <script src="focus-mode.js"></script>
+  <script src="shared.js"></script>
+  <script>
+    const menuBtn=document.querySelector(".menu-btn"),drawer=document.querySelector(".drawer"),backdrop=document.querySelector(".drawer-backdrop"),closeBtn=document.querySelector(".drawer-close");
+    function openMenu(){drawer.hidden=false;backdrop.hidden=false;menuBtn?.setAttribute("aria-expanded","true");document.body.classList.add('drawer-open');}
+    function closeMenu(){drawer.hidden=true;backdrop.hidden=true;menuBtn?.setAttribute("aria-expanded","false");document.body.classList.remove('drawer-open');}
+    menuBtn?.addEventListener("click",openMenu);closeBtn?.addEventListener("click",closeMenu);backdrop?.addEventListener("click",closeMenu);
+    SharedApp.initSavedModal();
+  </script>
+  <script>
+  (function() {
+    // ── Data sources ──────────────────────────────────────────────────────────
+    const DB = {
+      verbs:      { a1:window.verbsA1,      a2:window.verbsA2,      b1:window.verbsB1,      b2:window.verbsB2,      c1:window.verbsC1      },
+      nouns:      { a1:window.nounsA1,      a2:window.nounsA2,      b1:window.nounsB1,      b2:window.nounsB2,      c1:window.nounsC1      },
+      adjectives: { a1:window.adjectivesA1, a2:window.adjectivesA2, b1:window.adjectivesB1, b2:window.adjectivesB2, c1:window.adjectivesC1 },
+      adverbs:    { a1:window.adverbsA1,    a2:window.adverbsA2,    b1:window.adverbsB1,    b2:window.adverbsB2,    c1:window.adverbsC1    },
+    };
+    const CATS   = ['verbs','nouns','adjectives','adverbs'];
+    const LEVELS = ['a1','a2','b1','b2','c1'];
+
+    const CAT_META = {
+      verbs:      { icon:'🔤', label:'Verbs',      color:'#2563eb', url:'verbs.html'      },
+      nouns:      { icon:'📦', label:'Nouns',      color:'#059669', url:'nouns.html'      },
+      adjectives: { icon:'🎨', label:'Adjectives', color:'#d97706', url:'adjectives.html' },
+      adverbs:    { icon:'💨', label:'Adverbs',    color:'#be185d', url:'adverbs.html'    },
+    };
+
+    const LEVEL_META = {
+      a1:{ label:'A1', name:'Beginner' },
+      a2:{ label:'A2', name:'Elementary' },
+      b1:{ label:'B1', name:'Intermediate' },
+      b2:{ label:'B2', name:'Upper Int.' },
+      c1:{ label:'C1', name:'Advanced' },
+    };
+
+    // ── Read progress from localStorage ───────────────────────────────────────
+    function learnedCount(cat, lvl) {
+      const key = `${cat}:learned:${lvl}`;
+      try { return JSON.parse(localStorage.getItem(key) || '[]').length; } catch { return 0; }
+    }
+    function totalCount(cat, lvl) {
+      return (DB[cat][lvl] || []).length;
+    }
+
+    // ── Compute all stats ─────────────────────────────────────────────────────
+    let grandTotal = 0, grandLearned = 0;
+    const catStats = {}, lvlStats = {}, matrix = {};
+
+    for (const cat of CATS) {
+      catStats[cat] = { total:0, learned:0 };
+      matrix[cat] = {};
+      for (const lvl of LEVELS) {
+        const total   = totalCount(cat, lvl);
+        const learned = learnedCount(cat, lvl);
+        catStats[cat].total   += total;
+        catStats[cat].learned += learned;
+        matrix[cat][lvl] = { total, learned };
+        grandTotal   += total;
+        grandLearned += learned;
+      }
+    }
+    for (const lvl of LEVELS) {
+      lvlStats[lvl] = { total:0, learned:0 };
+      for (const cat of CATS) {
+        lvlStats[lvl].total   += matrix[cat][lvl].total;
+        lvlStats[lvl].learned += matrix[cat][lvl].learned;
+      }
+    }
+
+    const savedIds = JSON.parse(localStorage.getItem('savedWordsV1') || '[]');
+    const savedMeta = JSON.parse(localStorage.getItem('savedWordsMetaV1') || '{}');
+
+    // ── Hero row ──────────────────────────────────────────────────────────────
+    document.getElementById('heroTotal').textContent   = grandTotal.toLocaleString();
+    document.getElementById('heroLearned').textContent = grandLearned.toLocaleString();
+    document.getElementById('heroPct').textContent     = grandTotal ? Math.round(grandLearned/grandTotal*100)+'%' : '0%';
+    document.getElementById('heroSaved').textContent   = savedIds.length.toLocaleString();
+
+    // ── Category breakdown ────────────────────────────────────────────────────
+    const catEl = document.getElementById('catBreakdown');
+    catEl.innerHTML = CATS.map(cat => {
+      const { total, learned } = catStats[cat];
+      const pct = total ? Math.round(learned/total*100) : 0;
+      const { icon, label, color, url } = CAT_META[cat];
+      return `
+        <div class="cat-row">
+          <span class="cat-icon">${icon}</span>
+          <div class="cat-info">
+            <div class="cat-name"><a href="${url}" style="color:inherit;text-decoration:none;">${label}</a></div>
+            <div class="cat-stat">${learned} / ${total} learned</div>
+            <div class="bar-track" style="margin-top:4px;">
+              <div class="bar-fill" style="width:${pct}%;background:${color};"></div>
+            </div>
+          </div>
+          <div class="cat-pct" style="color:${color}">${pct}%</div>
+        </div>
+      `;
+    }).join('');
+
+    // ── Heatmap ───────────────────────────────────────────────────────────────
+    const hmEl = document.getElementById('heatmap');
+    hmEl.innerHTML = CATS.map(cat => {
+      const { icon, label, color } = CAT_META[cat];
+      const cells = LEVELS.map(lvl => {
+        const { total, learned } = matrix[cat][lvl];
+        const pct = total ? learned/total : 0;
+        const alpha = Math.round(pct * 0.85 * 255).toString(16).padStart(2,'0');
+        const bg = total === 0 ? 'rgba(0,0,0,.04)' : (pct === 0 ? 'rgba(0,0,0,.06)' : `${color}${alpha}`);
+        const textColor = pct > 0.4 ? '#fff' : '#555';
+        const display = total ? (pct === 0 ? '—' : `${Math.round(pct*100)}%`) : '—';
+        return `<div style="border-radius:8px;padding:8px 4px;text-align:center;background:${bg};color:${textColor};font-size:11px;font-weight:800;">${display}</div>`;
+      }).join('');
+      return `
+        <div style="font-size:11px;font-weight:800;opacity:.65;display:flex;align-items:center;gap:3px;">${icon}</div>
+        ${cells}
+      `;
+    }).join('');
+
+    // ── Level bars ────────────────────────────────────────────────────────────
+    const lvlEl = document.getElementById('levelBars');
+    lvlEl.innerHTML = LEVELS.map(lvl => {
+      const { total, learned } = lvlStats[lvl];
+      const pct = total ? Math.round(learned/total*100) : 0;
+      const { label, name } = LEVEL_META[lvl];
+      const color = { a1:'#059669', a2:'#10b981', b1:'#2563eb', b2:'#7c3aed', c1:'#be185d' }[lvl];
+      return `
+        <div class="bar-wrap" style="margin-bottom:10px;">
+          <div class="bar-label">
+            <span><strong>${label}</strong> ${name}</span>
+            <span style="color:${color}">${learned}/${total} (${pct}%)</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill" style="width:${pct}%;background:${color};"></div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    // ── Saved words ───────────────────────────────────────────────────────────
+    document.getElementById('savedCount').textContent = savedIds.length;
+    const savedEl = document.getElementById('savedPanel');
+    if (!savedIds.length) {
+      savedEl.innerHTML = `
+        <div class="empty-state">
+          <div style="font-size:32px;margin-bottom:8px;">♡</div>
+          No saved words yet.<br>Tap ♡ on any word to save it.
+        </div>`;
+    } else {
+      const items = savedIds.slice(0, 30).map(id => {
+        const meta = savedMeta[id] || {};
+        const label = meta.label || id;
+        const trans = meta.translation || '';
+        const url   = meta.url || '#';
+        return `
+          <div class="saved-item">
+            <div>
+              <a href="${url}">${label}</a>
+              ${trans ? `<div class="saved-trans">${trans}</div>` : ''}
+            </div>
+            <a href="${url}" style="font-size:11px;opacity:.4;text-decoration:none;">→</a>
+          </div>`;
+      }).join('');
+      const more = savedIds.length > 30 ? `<div style="text-align:center;font-size:12px;opacity:.45;padding:8px;">+${savedIds.length-30} more — open Saved (♥ button) to see all</div>` : '';
+      savedEl.innerHTML = `<div class="saved-list">${items}${more}</div>`;
+    }
+
+    // ── Reset button ──────────────────────────────────────────────────────────
+    document.getElementById('btnReset').addEventListener('click', () => {
+      if (!confirm('Reset ALL progress? This clears all learned marks and saved words. This cannot be undone.')) return;
+      const keys = [];
+      for (let i = 0; i < localStorage.length; i++) keys.push(localStorage.key(i));
+      keys.forEach(k => localStorage.removeItem(k));
+      location.reload();
+    });
+
+  })();
+  </script>
+</body>
+</html>

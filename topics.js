@@ -1206,99 +1206,6 @@ window.TOPICS = [
   // --------------------------
   // C2 — IDIOMATIC LOGIC
   // --------------------------
-  {
-    id: "c2-idiomatic-logic",
-    level: "C2",
-    tags: ["Patterns","Style","Writing"],
-    title: "C2 Logic Templates (je…desto, es sei denn, geschweige denn, nicht nur…sondern auch)",
-    summary: "Near-native fluency uses fixed templates that package logic and argument structure elegantly.",
-    deep: `
-      <div class="box">
-        <p><strong>Why it matters:</strong> these templates replace simple connector chains with native-like structure.</p>
-        <ul>
-          <li><strong>je … desto</strong> = correlation</li>
-          <li><strong>es sei denn</strong> = exception</li>
-          <li><strong>geschweige denn</strong> = “let alone” (stronger second point)</li>
-          <li><strong>nicht nur … sondern auch</strong> = additive emphasis</li>
-        </ul>
-        <p class="muted"><strong>Tip:</strong> learn them as complete units (including commas).</p>
-      </div>
-    `,
-    examples: `
-      <div class="box">
-        <p><strong>Je</strong> mehr ich lerne, <strong>desto</strong> besser werde ich.</p>
-        <p>Ich komme, <strong>es sei denn</strong>, ich bin krank.</p>
-        <p>Er hat es nicht erklärt, <strong>geschweige denn</strong> bewiesen.</p>
-        <p><strong>Nicht nur</strong> ist er pünktlich, <strong>sondern</strong> auch zuverlässig.</p>
-      </div>
-    `,
-    mistakes: `
-      <div class="box">
-        <p><strong>Trap:</strong> missing comma or wrong structure.</p>
-        <p><strong>Fix:</strong> memorize the “frame”: Je X, desto Y.</p>
-      </div>
-    `,
-    practice: `
-      <div class="box">
-        <p>Complete the template:</p>
-        <ul>
-          <li>Je ___ du übst, desto ___ wirst du.</li>
-          <li>Ich gehe mit, es sei denn, ___.</li>
-        </ul>
-      </div>
-    `
-  },
-    // --------------------------
-  // B1/B2 — NOUNS: PLURALS + N-DECLENSION
-  // --------------------------
-  {
-    id: "plural-patterns",
-    level: "B1",
-    tags: ["Nouns","Plurals","Vocabulary"],
-    title: "Plural Patterns (how German plurals actually work)",
-    summary: "German plurals aren’t one-rule-fits-all. Learn common patterns + signals (umlaut, -e/-er/-n/-s) and store plurals with nouns.",
-    deep: `
-      <div class="box">
-        <p><strong>Reality check:</strong> plurals must often be learned per noun, but patterns help you guess correctly.</p>
-        <p><strong>High-frequency patterns:</strong></p>
-        <ul>
-          <li><strong>-e</strong> (often masc/neut): der Tag → die Tag<strong>e</strong></li>
-          <li><strong>-e + umlaut</strong> (often): der Stuhl → die St<strong>ü</strong>hl<strong>e</strong></li>
-          <li><strong>-er (+ umlaut)</strong> (often neut): das Kind → die Kind<strong>er</strong>, das Buch → die B<strong>ü</strong>ch<strong>er</strong></li>
-          <li><strong>-n / -en</strong> (very common; many feminine): die Zeitung → die Zeitung<strong>en</strong></li>
-          <li><strong>-s</strong> (loanwords/abbreviations): das Auto → die Auto<strong>s</strong>, das Handy → die Handy<strong>s</strong></li>
-          <li><strong>no ending</strong> (some; often with umlaut): der Lehrer → die Lehrer</li>
-        </ul>
-        <div class="divider"></div>
-        <p><strong>Study tactic:</strong> learn nouns as a “bundle”: <em>der Tisch, -e</em> / <em>die Frau, -en</em> / <em>das Buch, ü-er</em>.</p>
-      </div>
-    `,
-    examples: `
-      <div class="box">
-        <p>die Frau → die Frau<strong>en</strong></p>
-        <p>das Buch → die B<strong>ü</strong>ch<strong>er</strong></p>
-        <p>der Student → die Student<strong>en</strong></p>
-        <p>das Auto → die Auto<strong>s</strong></p>
-      </div>
-    `,
-    mistakes: `
-      <div class="box">
-        <p><strong>Trap:</strong> assuming “-s like English”.</p>
-        <p><strong>Fix:</strong> reserve -s mainly for loanwords; otherwise expect -e/-en/-er/umlaut patterns.</p>
-      </div>
-    `,
-    practice: `
-      <div class="box">
-        <p>Add the plural:</p>
-        <ul>
-          <li>das Kind → die ____</li>
-          <li>die Stadt → die ____</li>
-          <li>der Stuhl → die ____</li>
-          <li>das Hotel → die ____</li>
-        </ul>
-      </div>
-    `
-  },
 
   {
     id: "n-declension",
@@ -1631,4 +1538,474 @@ window.TOPICS = [
     `
   },
 
+
+
+  // ════════════════════════════════════════════════════════
+  //  C2 — MASTERY
+  // ════════════════════════════════════════════════════════
+
+  {
+    id: "c2-idiomatic-logic",
+    level: "C2",
+    tags: ["Style","Connectors","Writing"],
+    title: "C2 Logic Templates: je…desto, es sei denn, geschweige denn, nicht nur…sondern auch",
+    summary: "C2 connectors and logical templates for nuanced argumentation: je…desto, es sei denn (unless), geschweige denn (let alone), nicht zuletzt (not least), demzufolge (consequently).",
+    deep: `
+      <div class="box">
+        <p><strong>je … desto/umso:</strong> the more … the more. Main clause after desto is inverted.</p>
+        <p class="muted">Je mehr ich lerne, <strong>desto</strong> besser werde ich.</p>
+        <div class="divider"></div>
+        <p><strong>es sei denn(, dass):</strong> unless</p>
+        <p class="muted">Ich komme morgen, <strong>es sei denn</strong>, es regnet.</p>
+        <div class="divider"></div>
+        <p><strong>geschweige denn:</strong> let alone (follows something even more impossible)</p>
+        <p class="muted">Er kann kaum lesen, <strong>geschweige denn</strong> schreiben.</p>
+        <div class="divider"></div>
+        <p><strong>nicht nur … sondern auch:</strong> not only … but also</p>
+        <p class="muted">Das ist <strong>nicht nur</strong> falsch, <strong>sondern auch</strong> gefährlich.</p>
+        <div class="divider"></div>
+        <p><strong>nicht zuletzt:</strong> not least (adds a final, weighty reason)</p>
+        <p class="muted">Das gelingt, <strong>nicht zuletzt</strong> wegen seiner Geduld.</p>
+        <div class="divider"></div>
+        <p><strong>demzufolge / infolgedessen:</strong> consequently, as a result</p>
+        <p class="muted">Die Studie war fehlerhaft. <strong>Demzufolge</strong> wurden die Ergebnisse zurückgezogen.</p>
+      </div>
+    `,
+    examples: `
+      <div class="box">
+        <p>Je früher du anfängst, <strong>desto</strong> mehr Zeit hast du.</p>
+        <p>Wir machen weiter, <strong>es sei denn</strong>, du hast Einwände.</p>
+        <p>Er spricht kaum Englisch, <strong>geschweige denn</strong> Japanisch.</p>
+        <p>Das Projekt war <strong>nicht nur</strong> teuer, <strong>sondern auch</strong> ineffizient.</p>
+        <p>Die Daten fehlten. <strong>Demzufolge</strong> musste die Analyse wiederholt werden.</p>
+      </div>
+    `,
+    mistakes: `
+      <div class="box">
+        <p>❌ Je mehr ich lerne, ich werde besser. → ✅ Je mehr ich lerne, <strong>desto besser werde</strong> ich. (inverted main clause)</p>
+        <p>❌ geschweige denn + conjugated verb → ✅ geschweige denn + infinitive/noun: geschweige denn schreiben.</p>
+      </div>
+    `,
+    practice: `
+      <div class="box">
+        <p>Fill in the connector:</p>
+        <ul>
+          <li>Er hat keine Zeit zu essen, ___ zu schlafen. (let alone)</li>
+          <li>Ich komme, ___ du brauchst mich. (unless you need me)</li>
+          <li>___ mehr wir üben, ___ besser werden wir.</li>
+        </ul>
+        <p class="muted">Answers: geschweige denn / es sei denn / Je / desto</p>
+      </div>
+    `
+  },
+
+  {
+    id: "c2-advanced-passive",
+    level: "C2",
+    tags: ["Voice","Passive","Style"],
+    title: "C2 Passive Mastery: All Tenses, Passiv mit Modalverb, bekommen-Passiv",
+    summary: "Complete passive command: passive in all 7 tenses, passive with modal verbs, the bekommen/erhalten/kriegen-Passiv (dative passive), and stylistic choice between active/passive.",
+    deep: `
+      <div class="box">
+        <p><strong>Full Vorgangspassiv tense chart:</strong></p>
+        <table class="grammar-table">
+          <tr><th>Tense</th><th>Formula</th><th>Example</th></tr>
+          <tr><td>Präsens</td><td>wird + PPII</td><td>Das Haus wird gebaut.</td></tr>
+          <tr><td>Präteritum</td><td>wurde + PPII</td><td>Das Haus wurde gebaut.</td></tr>
+          <tr><td>Perfekt</td><td>ist + PPII + <strong>worden</strong></td><td>Das Haus ist gebaut worden.</td></tr>
+          <tr><td>Plusquamperfekt</td><td>war + PPII + worden</td><td>Das Haus war gebaut worden.</td></tr>
+          <tr><td>Futur I</td><td>wird + PPII + werden</td><td>Das Haus wird gebaut werden.</td></tr>
+          <tr><td>Futur II</td><td>wird + PPII + worden + sein</td><td>Das Haus wird gebaut worden sein.</td></tr>
+          <tr><td>Konjunktiv II</td><td>würde + PPII + werden</td><td>Das Haus würde gebaut werden.</td></tr>
+        </table>
+        <div class="divider"></div>
+        <p><strong>Passiv + Modalverb:</strong> modal in pos. 2, PPII + werden at end.</p>
+        <p class="muted">Das muss gemacht <strong>werden</strong>. / Das musste gemacht <strong>werden</strong>. / Das hat gemacht <strong>werden müssen</strong>.</p>
+        <div class="divider"></div>
+        <p><strong>bekommen-Passiv (dative passive):</strong> dative subject receives something.</p>
+        <p class="muted">Ich <strong>bekomme</strong> das Paket <strong>geschickt</strong>. (= Das Paket wird mir geschickt.)</p>
+        <p class="muted">Er <strong>bekam</strong> eine Medaille <strong>verliehen</strong>.</p>
+        <p class="muted">Also: kriegen-Passiv (informal) and erhalten-Passiv (formal).</p>
+        <div class="divider"></div>
+        <p><strong>Stylistic alternatives (prefer in conversation):</strong></p>
+        <p class="muted">man + aktiv | sich lassen + Infinitiv (Das lässt sich lösen.) | sein + zu + Inf. (Das ist zu beachten.)</p>
+      </div>
+    `,
+    examples: `
+      <div class="box">
+        <p>Das Gesetz <strong>ist</strong> letztes Jahr <strong>verabschiedet worden</strong>. <span class="muted">/ Perfekt passive</span></p>
+        <p>Das Projekt <strong>muss abgeschlossen werden</strong>. <span class="muted">/ modal + passive</span></p>
+        <p>Er <strong>bekam</strong> den Preis <strong>verliehen</strong>. <span class="muted">/ bekommen-Passiv</span></p>
+        <p>Das <strong>lässt sich</strong> nicht beweisen. <span class="muted">/ natural alternative</span></p>
+        <p>Das <strong>ist zu beachten</strong>. <span class="muted">/ sein+zu alternative</span></p>
+      </div>
+    `,
+    mistakes: `
+      <div class="box">
+        <p>❌ ist gebaut <strong>geworden</strong> → ✅ ist gebaut <strong>worden</strong> (passive Perfekt: worden, not geworden!)</p>
+        <p>❌ Das muss werden gemacht → ✅ Das muss gemacht <strong>werden</strong>.</p>
+        <p>❌ Ich bekomme geschickt das Paket → ✅ Ich bekomme das Paket <strong>geschickt</strong>. (PPII at end)</p>
+      </div>
+    `,
+    practice: `
+      <div class="box">
+        <p>Transform:</p>
+        <ul>
+          <li>Active → Passive: Man hat das Auto repariert. → Das Auto ___.</li>
+          <li>Active → bekommen-Passiv: Der Arzt verschreibt mir ein Medikament. → Ich ___ ein Medikament ___.</li>
+          <li>Passive → sich lassen: Das Problem kann gelöst werden. → Das Problem ___.</li>
+        </ul>
+        <p class="muted">Answers: ist repariert worden / bekomme ... verschrieben / lässt sich lösen</p>
+      </div>
+    `
+  },
+
+  {
+    id: "c2-extended-participial",
+    level: "C2",
+    tags: ["Clauses","Style","Reading","Writing"],
+    title: "Extended Participial Attributes & Long Noun Phrases (newspaper/academic German)",
+    summary: "German compresses entire relative clauses into pre-noun participial phrases. Essential for reading newspapers, law texts, and academic German. The longer the phrase between article and noun, the more formal the register.",
+    deep: `
+      <div class="box">
+        <p><strong>The principle:</strong> Everything that would be a relative clause in English can sit between the article and the noun in German.</p>
+        <div class="divider"></div>
+        <table class="grammar-table">
+          <tr><th>Type</th><th>Relative clause</th><th>Compressed attribute</th></tr>
+          <tr><td>Active ongoing (PI)</td><td>die Studenten, die kommen</td><td>die <strong>kommenden</strong> Studenten</td></tr>
+          <tr><td>Passive/completed (PII)</td><td>das Gesetz, das verabschiedet wurde</td><td>das <strong>verabschiedete</strong> Gesetz</td></tr>
+          <tr><td>Must-be-done (zu+PI)</td><td>das Problem, das gelöst werden muss</td><td>das zu <strong>lösende</strong> Problem</td></tr>
+        </table>
+        <div class="divider"></div>
+        <p><strong>Extended attributes</strong> include the full participial phrase:</p>
+        <p class="muted">das von der Regierung im Jahr 2023 mit großer Mehrheit <strong>verabschiedete</strong> Gesetz</p>
+        <p class="muted">(the law passed by the government in 2023 with a large majority)</p>
+        <div class="divider"></div>
+        <p><strong>Reading strategy:</strong> find the article → jump to the noun (it's always right before the verb or after the long phrase) → read the middle phrase as the relative clause.</p>
+        <div class="divider"></div>
+        <p><strong>Stacked noun phrases</strong> (very dense formal German):</p>
+        <p class="muted">die anhaltende Diskussion über die mit dem Klimawandel verbundenen wirtschaftlichen Folgen</p>
+        <p class="muted">(the ongoing discussion about the economic consequences associated with climate change)</p>
+      </div>
+    `,
+    examples: `
+      <div class="box">
+        <p>die aus vielen Ländern <strong>stammenden</strong> Teilnehmer <span class="muted">/ the participants coming from many countries</span></p>
+        <p>das noch zu <strong>lösende</strong> Problem <span class="muted">/ the problem still to be solved</span></p>
+        <p>die in den letzten Jahren stark <strong>gestiegenen</strong> Energiepreise <span class="muted">/ energy prices that have risen sharply in recent years</span></p>
+        <p>ein in der Öffentlichkeit kaum <strong>diskutiertes</strong> Thema <span class="muted">/ a topic barely discussed in public</span></p>
+      </div>
+    `,
+    mistakes: `
+      <div class="box">
+        <p>❌ Missing adjective ending on participle: das gestartete Projekt<strong>e</strong> → ✅ das gestartete Projekt</p>
+        <p>❌ Participial attribute after the noun → ✅ it must come BEFORE the noun.</p>
+        <p>Tip: these constructions are almost exclusively written German. In speech, use relative clauses.</p>
+      </div>
+    `,
+    practice: `
+      <div class="box">
+        <p>Compress to participial attribute:</p>
+        <ul>
+          <li>die Studie, die letztes Jahr veröffentlicht wurde → die letztes Jahr ___ Studie</li>
+          <li>das Problem, das noch gelöst werden muss → das noch zu ___ Problem</li>
+          <li>der Politiker, der die Rede hält → der die Rede ___ Politiker</li>
+        </ul>
+        <p class="muted">Answers: veröffentlichte / lösende / haltende</p>
+      </div>
+    `
+  },
+
+  {
+    id: "c2-syntax-inversion",
+    level: "C2",
+    tags: ["Word order","Style","Emphasis"],
+    title: "C2 Syntax: Topicalization, Emphasis & Information Structure",
+    summary: "At C2, you control emphasis through deliberate fronting, right-dislocation, cleft sentences, and the position of nicht/nur/sogar/selbst. These are what make writing and speech stylistically precise.",
+    deep: `
+      <div class="box">
+        <p><strong>Topicalization (Fronting):</strong> Move any element to position 1 to make it the topic/focus. The verb stays in position 2.</p>
+        <p class="muted">Den Bericht habe ich gestern fertiggestellt. (It's the report I'm talking about.)</p>
+        <p class="muted">Gestern habe ich den Bericht fertiggestellt. (Yesterday is the focus.)</p>
+        <div class="divider"></div>
+        <p><strong>nicht / nur / sogar / selbst / auch position:</strong> these particles always precede the element they modify.</p>
+        <p class="muted">Ich habe <strong>nicht den Bericht</strong> gelesen. (not the report — something else)</p>
+        <p class="muted">Ich habe den Bericht <strong>nicht</strong> gelesen. (didn't read it at all)</p>
+        <p class="muted"><strong>Sogar</strong> der Chef hat applaudiert. (even the boss)</p>
+        <div class="divider"></div>
+        <p><strong>Cleft sentence (Spaltsatz):</strong> Es ist X, der/die/das … — emphatic identification.</p>
+        <p class="muted"><strong>Es ist</strong> der Fahrer, der schuld ist. (It's the driver who is at fault.)</p>
+        <p class="muted"><strong>Es war</strong> diese Entscheidung, die alles veränderte.</p>
+        <div class="divider"></div>
+        <p><strong>Right-dislocation:</strong> element mentioned then restated with pronoun — spoken emphasis.</p>
+        <p class="muted">Der Müller, <strong>der</strong> hat das gesagt. (It's Müller who said that.)</p>
+      </div>
+    `,
+    examples: `
+      <div class="box">
+        <p><strong>Fronting:</strong> Dieses Problem haben wir schon lange diskutiert. <span class="muted">/ This problem is what we've been discussing.</span></p>
+        <p><strong>Contrast:</strong> Nicht ich, sondern er hat das gesagt.</p>
+        <p><strong>Sogar:</strong> Sogar er hat es nicht verstanden.</p>
+        <p><strong>Cleft:</strong> Es war diese Entscheidung, die zum Erfolg geführt hat.</p>
+      </div>
+    `,
+    mistakes: `
+      <div class="box">
+        <p>❌ Placing nicht at end when negating a specific element: Ich habe den Bericht nicht gelesen ≠ Ich habe nicht den Bericht gelesen (different meaning!)</p>
+        <p>Tip: the position of <em>nicht</em> changes the scope of negation — very important for precision at C2.</p>
+      </div>
+    `,
+    practice: `
+      <div class="box">
+        <p>Rewrite with emphasis on the underlined element:</p>
+        <ul>
+          <li>Ich habe <u>gestern</u> den Brief geschrieben. → start with Gestern…</li>
+          <li>Identify the difference: "Ich lese nicht das Buch." vs "Ich lese das Buch nicht."</li>
+        </ul>
+        <p class="muted">Answer 1: Gestern habe ich den Brief geschrieben. | Answer 2: First = I'm not reading THE book (something else). Second = I don't read the book at all.</p>
+      </div>
+    `
+  },
+
+  {
+    id: "c2-concession-argumentation",
+    level: "C2",
+    tags: ["Connectors","Argumentation","Writing"],
+    title: "C2 Argumentation: Concession, Limitation, Apparent Contradiction",
+    summary: "Master the connectors that handle nuance: wenngleich, nichtsdestotrotz, insofern als, sofern, allem Anschein nach, je nachdem, wohingegen, unbeschadet, ungeachtet.",
+    deep: `
+      <div class="box">
+        <p><strong>Concession (although/even though):</strong></p>
+        <table class="grammar-table">
+          <tr><th>Connector</th><th>Type</th><th>Register</th></tr>
+          <tr><td>obwohl</td><td>subordinate</td><td>neutral</td></tr>
+          <tr><td>wenngleich / wiewohl</td><td>subordinate</td><td>formal/written</td></tr>
+          <tr><td>zwar … aber</td><td>main + main</td><td>neutral spoken</td></tr>
+          <tr><td>trotzdem / dennoch / nichtsdestotrotz</td><td>adverb</td><td>formal (latter very formal)</td></tr>
+          <tr><td>ungeachtet (+ GEN)</td><td>preposition</td><td>very formal/legal</td></tr>
+        </table>
+        <div class="divider"></div>
+        <p><strong>Limitation/Condition:</strong></p>
+        <p class="muted"><strong>insofern als:</strong> insofar as, to the degree that: Das stimmt, <strong>insofern als</strong> die Daten korrekt sind.</p>
+        <p class="muted"><strong>sofern:</strong> provided that: <strong>Sofern</strong> keine Einwände bestehen, fahren wir fort.</p>
+        <p class="muted"><strong>soweit:</strong> as far as: <strong>Soweit</strong> ich weiß, ist er noch hier.</p>
+        <div class="divider"></div>
+        <p><strong>Apparent evidence / assumption:</strong></p>
+        <p class="muted"><strong>allem Anschein nach:</strong> apparently: <strong>Allem Anschein nach</strong> hat er gewonnen.</p>
+        <p class="muted"><strong>angeblich:</strong> allegedly: Er hat <strong>angeblich</strong> betrogen.</p>
+        <div class="divider"></div>
+        <p><strong>Depending on:</strong></p>
+        <p class="muted"><strong>je nachdem, ob/wie/was:</strong> <strong>Je nachdem</strong>, wie viel Zeit bleibt, entscheiden wir vor Ort.</p>
+        <div class="divider"></div>
+        <p><strong>es sei denn:</strong> unless (C2 alternative to wenn … nicht)</p>
+        <p class="muted">Wir fahren, <strong>es sei denn</strong>, es regnet.</p>
+      </div>
+    `,
+    examples: `
+      <div class="box">
+        <p><strong>Wenngleich</strong> die Ergebnisse positiv sind, besteht noch Handlungsbedarf.</p>
+        <p>Das Gesetz gilt, <strong>ungeachtet</strong> der Nationalität.</p>
+        <p>Das ist richtig, <strong>insofern als</strong> man es isoliert betrachtet.</p>
+        <p><strong>Allem Anschein nach</strong> hat die Partei die Wahl verloren.</p>
+        <p>Wir starten pünktlich, <strong>es sei denn</strong>, es gibt technische Probleme.</p>
+      </div>
+    `,
+    mistakes: `
+      <div class="box">
+        <p>❌ nichtsdestotrotz in casual speech → sounds stiff; use trotzdem instead</p>
+        <p>❌ je nachdem without ob/wie/was → ✅ je nachdem, <strong>ob</strong> er kommt (not just "je nachdem er kommt")</p>
+      </div>
+    `,
+    practice: `
+      <div class="box">
+        <p>Fill in the most precise connector:</p>
+        <ul>
+          <li>The results are good, <em>insofar as</em> they are based on correct data. → ___ die Daten korrekt sind.</li>
+          <li><em>Apparently</em> no agreement was reached. → ___ wurde keine Einigung erzielt.</li>
+          <li>We continue, <em>unless</em> there are objections. → Wir machen weiter, ___.</li>
+        </ul>
+        <p class="muted">Answers: insofern als / Allem Anschein nach / es sei denn, es gibt Einwände</p>
+      </div>
+    `
+  },
+
+  {
+    id: "c2-style-register",
+    level: "C2",
+    tags: ["Style","Register","Writing"],
+    title: "C2 Style & Register: Formal, Neutral, Colloquial — Knowing the Difference",
+    summary: "At C2, you choose register deliberately. Understand what distinguishes academic, journalistic, bureaucratic, and colloquial German — and switch between them. Key: verb-noun ratio, passive frequency, sentence length, modal particles.",
+    deep: `
+      <div class="box">
+        <p><strong>Four registers compared:</strong></p>
+        <table class="grammar-table">
+          <tr><th>Feature</th><th>Academic</th><th>Journalistic</th><th>Bureaucratic</th><th>Colloquial</th></tr>
+          <tr><td>Nouns vs verbs</td><td>noun-heavy (Nominalstil)</td><td>balanced</td><td>very noun-heavy</td><td>verb-heavy</td></tr>
+          <tr><td>Passive</td><td>frequent</td><td>moderate</td><td>very frequent</td><td>rare (man instead)</td></tr>
+          <tr><td>Sentence length</td><td>very long</td><td>medium</td><td>very long</td><td>short</td></tr>
+          <tr><td>Modal particles</td><td>never</td><td>rarely</td><td>never</td><td>always</td></tr>
+          <tr><td>Konjunktiv I</td><td>sometimes</td><td>frequent</td><td>rare</td><td>never</td></tr>
+        </table>
+        <div class="divider"></div>
+        <p><strong>Same idea, 4 registers:</strong></p>
+        <p class="muted"><em>Colloquial:</em> "Man hat das einfach nicht gut geplant."</p>
+        <p class="muted"><em>Journalistic:</em> "Die Planung wurde von vielen als unzureichend kritisiert."</p>
+        <p class="muted"><em>Academic:</em> "Die mangelhafte Vorbereitung führte zu strukturellen Defiziten bei der Umsetzung."</p>
+        <p class="muted"><em>Bureaucratic:</em> "Aufgrund unzureichender Maßnahmen zur Planung konnten die vorgesehenen Ziele nicht erreicht werden."</p>
+        <div class="divider"></div>
+        <p><strong>Nominalstil key patterns (academic/formal):</strong></p>
+        <p class="muted">in Betracht ziehen | zur Verfügung stellen | in Frage stellen | Maßnahmen ergreifen | einen Beitrag leisten | Rechenschaft ablegen | Rücksicht nehmen auf</p>
+        <div class="divider"></div>
+        <p><strong>Bureaucratic formulae:</strong></p>
+        <p class="muted">hiermit | im Rahmen von | bezüglich | vorbehaltlich | gemäß | unbeschadet</p>
+      </div>
+    `,
+    examples: `
+      <div class="box">
+        <p><em>Academic opener:</em> Im Folgenden wird untersucht, inwiefern…</p>
+        <p><em>Journalistic opener:</em> Wie aus aktuellen Berichten hervorgeht…</p>
+        <p><em>Formal objection:</em> Es sei darauf hingewiesen, dass…</p>
+        <p><em>Bureaucratic approval:</em> Hiermit wird bestätigt, dass… / Gemäß § 3 Abs. 2…</p>
+      </div>
+    `,
+    mistakes: `
+      <div class="box">
+        <p>❌ Using modal particles (ja, doch, halt) in academic writing.</p>
+        <p>❌ Using Nominalstil in casual conversation — unnatural and pompous.</p>
+        <p>❌ Using Konjunktiv I in everyday speech — sounds like you're quoting someone.</p>
+        <p>Tip: Read one article from each: a German Wikipedia article (academic), Der Spiegel (journalistic), a Bürgeramt letter (bureaucratic), and a German WhatsApp chat (colloquial). The differences are immediately obvious.</p>
+      </div>
+    `,
+    practice: `
+      <div class="box">
+        <p>Rewrite in a different register:</p>
+        <ul>
+          <li><em>Colloquial → Academic:</em> "Das Problem ist echt groß und die Leute sind sauer."</li>
+          <li><em>Academic → Colloquial:</em> "Die unzureichende Ressourcenallokation hat zu negativen Konsequenzen geführt."</li>
+        </ul>
+        <p class="muted">Example Academic: Das Problem ist von erheblicher Tragweite und ruft in der Bevölkerung berechtigte Bedenken hervor. | Example Colloquial: Es wurden nicht genug Ressourcen bereitgestellt, und das hatte Folgen.</p>
+      </div>
+    `
+  },
+
+  {
+    id: "c2-subjunctive-reported",
+    level: "C2",
+    tags: ["Mood","Reported speech","Style"],
+    title: "C2 Reported Speech: Konjunktiv I in All Forms + Indirect Questions + Distance Markers",
+    summary: "Full command of Konjunktiv I (all persons, all tenses), the fallback to KII when KI = indicative, indirect questions with ob/W-word, and epistemic distance markers (angeblich, vermeintlich, mutmaßlich).",
+    deep: `
+      <div class="box">
+        <p><strong>Full Konjunktiv I paradigm (key forms):</strong></p>
+        <table class="grammar-table">
+          <tr><th>Verb</th><th>ich</th><th>du</th><th>er/sie/es</th><th>wir/sie</th></tr>
+          <tr><td>sein</td><td>sei</td><td>sei(e)st</td><td><strong>sei</strong></td><td>seien</td></tr>
+          <tr><td>haben</td><td>habe</td><td>habest</td><td><strong>habe</strong></td><td>haben (→KII: hätten)</td></tr>
+          <tr><td>werden</td><td>werde</td><td>werdest</td><td><strong>werde</strong></td><td>werden (→KII: würden)</td></tr>
+          <tr><td>können</td><td>könne</td><td>könnest</td><td><strong>könne</strong></td><td>können (→KII: könnten)</td></tr>
+        </table>
+        <p class="muted">Rule: if KI = indicative (wir haben = wir haben), use KII instead (wir hätten).</p>
+        <div class="divider"></div>
+        <p><strong>KI tenses:</strong></p>
+        <p class="muted">Present → KI present: er sagt, er <strong>komme</strong>.</p>
+        <p class="muted">Past → KI perfect: er sagt, er <strong>sei</strong> schon <strong>gegangen</strong>.</p>
+        <p class="muted">Future → KI of werden: er sagt, er <strong>werde</strong> kommen.</p>
+        <div class="divider"></div>
+        <p><strong>Indirect questions:</strong></p>
+        <p class="muted">Direct: "Kommst du?" → Indirect: Er fragte, <strong>ob</strong> er komme/käme.</p>
+        <p class="muted">Direct: "Wann kommst du?" → Indirect: Er fragte, <strong>wann</strong> er komme/käme.</p>
+        <div class="divider"></div>
+        <p><strong>Distance markers (hedging words):</strong></p>
+        <p class="muted"><strong>angeblich</strong> = allegedly | <strong>vermeintlich</strong> = supposedly | <strong>mutmaßlich</strong> = presumably | <strong>anscheinend</strong> = apparently | <strong>offenbar</strong> = evidently</p>
+      </div>
+    `,
+    examples: `
+      <div class="box">
+        <p>Der Zeuge sagt, er <strong>habe</strong> nichts gesehen. <span class="muted">/ KI present</span></p>
+        <p>Die Ministerin erklärte, die Maßnahmen <strong>seien</strong> notwendig.</p>
+        <p>Sie behaupteten, sie <strong>hätten</strong> gewonnen. <span class="muted">/ KII — wir-form clashes</span></p>
+        <p>Er fragte, <strong>ob</strong> sie kommen <strong>könne</strong>.</p>
+        <p>Der <strong>angeblich</strong> gefundene Beweis war gefälscht.</p>
+        <p>Der <strong>mutmaßliche</strong> Täter wurde verhaftet.</p>
+      </div>
+    `,
+    mistakes: `
+      <div class="box">
+        <p>❌ Using KI where it's identical to indicative → ✅ switch to KII: wir kommen (ind.) → wir <strong>kämen</strong> (KII reported)</p>
+        <p>❌ Indirect question with verb-second: Er fragte, wann <strong>kommt</strong> er. → ✅ Er fragte, wann er <strong>komme/käme</strong>. (verb-final in indirect question)</p>
+      </div>
+    `,
+    practice: `
+      <div class="box">
+        <p>Convert to reported speech (use KI where possible, KII as fallback):</p>
+        <ul>
+          <li>"Ich bin nicht schuldig." → Er sagt, er ___.</li>
+          <li>"Wir haben das nicht gewusst." → Sie sagten, sie ___.</li>
+          <li>"Werden wir rechtzeitig fertig?" → Er fragte, ob sie ___.</li>
+        </ul>
+        <p class="muted">Answers: sei nicht schuldig / hätten das nicht gewusst (KII — wir-form) / rechtzeitig fertig werden würden / werden könnten</p>
+      </div>
+    `
+  },
+
+  {
+    id: "c2-n-declension-advanced",
+    level: "C2",
+    tags: ["Nouns","Cases","Advanced"],
+    title: "C2 Noun Declension Edge Cases: n-Declension, Heteronyms & Tricky Genitives",
+    summary: "Master the edge cases: full n-declension list including irregular nouns (Herr, Name, Buchstabe), nouns with two genitives, heteronyms (Wörter vs Worte), and formal genitive -es vs -s.",
+    deep: `
+      <div class="box">
+        <p><strong>n-Declension (weak masculine nouns):</strong> add -en/-n in all cases except NOM singular.</p>
+        <table class="grammar-table">
+          <tr><th>Case</th><th>der Mensch</th><th>der Student</th><th>der Herr</th></tr>
+          <tr><td>NOM</td><td>der Mensch</td><td>der Student</td><td>der Herr</td></tr>
+          <tr><td>AKK</td><td>den Menschen</td><td>den Studenten</td><td>den Herrn</td></tr>
+          <tr><td>DAT</td><td>dem Menschen</td><td>dem Studenten</td><td>dem Herrn</td></tr>
+          <tr><td>GEN</td><td>des Menschen</td><td>des Studenten</td><td>des Herrn</td></tr>
+          <tr><td>PL (all)</td><td>die Menschen</td><td>die Studenten</td><td>die Herren</td></tr>
+        </table>
+        <p class="muted">Common n-declension: Mensch, Junge, Kollege, Kunde, Herr, Student, Präsident, Journalist, Tourist, Soldat, Held, Bauer, Nachbar, Zeuge, Name*, Buchstabe*, Gedanke*</p>
+        <p class="muted">*Name, Gedanke, Glaube, Buchstabe, Funke also add -ns in Genitive: des Namen<strong>s</strong></p>
+        <div class="divider"></div>
+        <p><strong>Heteronyms (different plurals = different meanings):</strong></p>
+        <table class="grammar-table">
+          <tr><th>Singular</th><th>Plural 1</th><th>Plural 2</th></tr>
+          <tr><td>das Wort</td><td>die Wörter (individual words)</td><td>die Worte (words with meaning/quotation)</td></tr>
+          <tr><td>das Band</td><td>die Bänder (ribbons/tapes)</td><td>die Bande (bonds/ties)</td></tr>
+          <tr><td>der Rat</td><td>die Räte (councils)</td><td>die Ratschläge (pieces of advice)</td></tr>
+        </table>
+        <div class="divider"></div>
+        <p><strong>Genitive -s vs -es:</strong> both are correct for most masc/neut nouns. -es preferred after -s, -sch, -tz, -x: des Hauses, des Platzes. -s preferred in compound nouns and foreign words.</p>
+      </div>
+    `,
+    examples: `
+      <div class="box">
+        <p>An <strong>Herrn</strong> Müller, ... <span class="muted">/ formal letter: Herrn = AKK/DAT of Herr</span></p>
+        <p>des Name<strong>ns</strong> (NOT des Namens → actually des Namens IS correct — gen. adds -ns)</p>
+        <p>Das Wörterbuch enthält 50.000 <strong>Wörter</strong>. <span class="muted">/ individual dictionary entries</span></p>
+        <p>Seine letzten <strong>Worte</strong> werden unvergessen bleiben. <span class="muted">/ meaningful final words</span></p>
+      </div>
+    `,
+    mistakes: `
+      <div class="box">
+        <p>❌ An Herr Müller (in a letter) → ✅ An <strong>Herrn</strong> Müller</p>
+        <p>❌ des Gedankees → ✅ des Gedankens (n-decl. + -ns in GEN)</p>
+        <p>❌ Die letzten Wörter des Sterbenden → ✅ Die letzten <strong>Worte</strong> des Sterbenden (meaningful final words)</p>
+      </div>
+    `,
+    practice: `
+      <div class="box">
+        <p>Decline correctly:</p>
+        <ul>
+          <li>Ich schreibe an ___ (der Herr Müller).</li>
+          <li>Das sind die Ideen ___ (der Mensch, GEN PL).</li>
+          <li>Wörter or Worte? "The last __ of the president."</li>
+        </ul>
+        <p class="muted">Answers: Herrn Müller / der Menschen / Worte</p>
+      </div>
+    `
+  },
+
+];
 ];

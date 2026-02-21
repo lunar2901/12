@@ -50,6 +50,7 @@
       <a href="adverbs.html" class="drawer-link">💨 Adverbs</a>
       <a href="practice.html" class="drawer-link drawer-link--active">✅ Practice</a>
       <a href="grammar.html" class="drawer-link">📖 Grammar</a>
+      <a href="progress.html" class="drawer-link">📊 Progress</a>
     </nav>
   </aside>
 
@@ -81,22 +82,34 @@
           <div class="setting-group">
             <label for="practice-level">Level:</label>
             <select id="practice-level" class="select-input">
+              <option value="all">All Levels</option>
               <option value="a1">A1 - Beginner</option>
               <option value="a2">A2 - Elementary</option>
-              <option value="b1">B1 - Intermediate</option>
+              <option value="b1" selected>B1 - Intermediate</option>
               <option value="b2">B2 - Upper Intermediate</option>
               <option value="c1">C1 - Advanced</option>
             </select>
           </div>
           <div class="setting-group">
+            <label for="word-category">Category:</label>
+            <select id="word-category" class="select-input">
+              <option value="all">🔀 All Words</option>
+              <option value="verbs">🔤 Verbs</option>
+              <option value="nouns">📦 Nouns</option>
+              <option value="adjectives">🎨 Adjectives</option>
+              <option value="adverbs">💨 Adverbs</option>
+            </select>
+          </div>
+          <div class="setting-group">
             <label for="exercise-type">Exercise Type:</label>
             <select id="exercise-type" class="select-input">
-              <option value="mixed">Mixed Practice</option>
-              <option value="forms">Verb Forms</option>
+              <option value="mixed">Mixed</option>
               <option value="translation">Translation</option>
-              <option value="preposition">Prepositions</option>
               <option value="multiple-choice">Multiple Choice</option>
-              <option value="fill-blank">Fill in the Blank</option>
+              <option value="article">Article (der/die/das)</option>
+              <option value="plural">Plural Form</option>
+              <option value="verb-forms">Verb Forms</option>
+              <option value="comparison">Adj. Comparison</option>
             </select>
           </div>
         </div>
@@ -146,11 +159,11 @@
         <div class="tips-section">
           <h3>💡 Practice Tips</h3>
           <ul>
-            <li>Focus on one level at a time to build solid foundations</li>
-            <li>Pay attention to prepositions — they're crucial in German</li>
-            <li>Try to maintain a streak to stay motivated!</li>
-            <li>Use "Show Answer" if stuck, but try to answer first</li>
-            <li>Read the example sentences to understand context</li>
+            <li><strong>Nouns:</strong> Always learn the article (der/die/das) with every noun</li>
+            <li><strong>Verbs:</strong> Irregular past tenses are the most important forms to memorize</li>
+            <li><strong>Adjectives:</strong> Learn comparative &amp; superlative together with the base form</li>
+            <li><strong>Adverbs:</strong> Pay attention to sentence position — it changes meaning</li>
+            <li>Use "Show Answer" if stuck, then try to recall why that's correct</li>
           </ul>
         </div>
       </section>
@@ -189,6 +202,6 @@
     SharedApp.initSavedModal();
     SharedApp.initSearchModal();
   </script>
-  <script type="module" src="practice.js"></script>
+  <script src="practice.js"></script>
 </body>
 </html>
