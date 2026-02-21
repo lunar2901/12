@@ -227,6 +227,39 @@
       color: #888;
       font-size: 1rem;
     }
+
+    /* ── Practice section ── */
+    .practice-note {
+      font-size: .82rem;
+      color: #9090b0;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+    .reveal-answers-btn {
+      margin-top: 12px;
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 6px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: .82rem;
+      font-weight: 600;
+      transition: .2s;
+    }
+    .reveal-answers-btn:hover { background: var(--accent); color: #fff; }
+    .practice-answers {
+      display: none;
+      margin-top: 10px;
+      background: #1a2a1a;
+      border: 1px solid #3a6a3a;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: .85rem;
+      color: #80e080;
+    }
+    .practice-answers.visible { display: block; }
+    .practice-answers p { margin: 0; }
   </style>
 </head>
 <body>
@@ -507,6 +540,25 @@
       }
 
       /* ===== Render single card ===== */
+      function renderPractice(html) {
+        // Extract the answers line (inside .muted paragraph at the bottom of practice box)
+        const answerMatch = html.match(/<p[^>]*class="muted"[^>]*>(.*?)<\/p>\s*<\/div>\s*`?\s*$/s);
+        let answers = '';
+        let body = html;
+        if (answerMatch) {
+          answers = answerMatch[1].replace(/<[^>]+>/g,'');
+          // Remove the muted answer line from the body shown upfront
+          body = html.replace(answerMatch[0], '</div>');
+        }
+        const uid = 'pa-' + Math.random().toString(36).slice(2,8);
+        return body
+          + `<p class="practice-note">✍️ Write your answers, then check below.</p>`
+          + (answers
+            ? `<button class="reveal-answers-btn" onclick="document.getElementById('${uid}').classList.toggle('visible');this.textContent=this.textContent.includes('Reveal')?'Hide answers':'Reveal answers'">Reveal answers</button>
+               <div id="${uid}" class="practice-answers"><p>${answers}</p></div>`
+            : '');
+      }
+
       function renderCard(){
         const cont = document.getElementById('grammarCard');
         if(!filteredList.length){
@@ -535,7 +587,7 @@
               ${t.deep?`<details class="grammar-sec"><summary>📘 Deep explanation</summary><div class="grammar-sec-body">${t.deep}</div></details>`:''}
               ${t.examples?`<details class="grammar-sec" open><summary>💬 Examples</summary><div class="grammar-sec-body">${t.examples}</div></details>`:''}
               ${t.mistakes?`<details class="grammar-sec"><summary>⚠️ Common mistakes</summary><div class="grammar-sec-body">${t.mistakes}</div></details>`:''}
-              ${t.practice?`<details class="grammar-sec"><summary>✏️ Mini practice</summary><div class="grammar-sec-body">${t.practice}</div></details>`:''}
+              ${t.practice?`<details class="grammar-sec"><summary>✏️ Mini practice</summary><div class="grammar-sec-body">${renderPractice(t.practice)}</div></details>`:''}
             </div>
 
             <div class="grammar-nav">
